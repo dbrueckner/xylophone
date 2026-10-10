@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Xylophon-Lieder</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Xylophon">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#C79566">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#EEF2F7; --paper:#FFFFFF; --ink:#1E2A44; --soft:#5B6782; --line:#D5DCE7;
+  --wood:#C79566; --wood-dark:#9C6B40;
+  --n1:#E53935; --n2:#FB8C00; --n3:#FDD835; --n4:#43A047;
+  --n5:#1E3A9E; --n6:#29B6F6; --n7:#8E24AA; --n8:#F06292;
+  --v1:#111111; --v2:#1565C0; --v3:#C62828; --v4:#2E7D32; --v5:#7B1FA2; --v6:#E65100; --v7:#00838F;
+  --font:"Baloo 2", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121722; --paper:#1B2231; --ink:#E9EEF7; --soft:#A3AEC4; --line:#2C3549;
+    --wood:#8A6440; --wood-dark:#5E4129;
+    --v1:#F4F6FA; --v2:#64B5F6; --v3:#EF9A9A; --v4:#81C784; --v5:#CE93D8; --v6:#FFB74D; --v7:#4DD0E1;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121722; --paper:#1B2231; --ink:#E9EEF7; --soft:#A3AEC4; --line:#2C3549;
+  --wood:#8A6440; --wood-dark:#5E4129;
+  --v1:#F4F6FA; --v2:#64B5F6; --v3:#EF9A9A; --v4:#81C784; --v5:#CE93D8; --v6:#FFB74D; --v7:#4DD0E1;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.45}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:2rem;line-height:1.1;margin:4px 0 6px;font-weight:800}
+.lead{color:var(--soft);margin:0 0 18px}
+
+/* Xylophone */
+.xylo{background:var(--wood);border:3px solid var(--wood-dark);border-radius:18px;padding:16px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.bar{flex:1;border:none;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 0;font-family:var(--font);font-weight:800;font-size:1.05rem;box-shadow:inset 0 -5px 0 rgba(0,0,0,.18);transition:transform .08s}
+.bar:active,.bar.hit{transform:scale(.94)}
+.bar:focus-visible,.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.bar .pin{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.7)}
+.bar .nm{line-height:1}
+.legend{display:flex;justify-content:space-between;gap:6px;padding:6px 13px 0;color:var(--soft);font-size:.85rem;text-align:center}
+.legend span{flex:1}
+
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px;align-items:center}
+.btn{font-family:var(--font);font-weight:700;font-size:1rem;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:999px;padding:6px 16px;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--paper)}
+
+.editor{display:none;background:var(--paper);border:2px dashed var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.editor.open{display:block}
+.editor p{margin:0 0 8px;color:var(--soft)}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.swatches label{display:flex;align-items:center;gap:6px;font-weight:700}
+.swatches input{width:42px;height:34px;border:none;background:none;padding:0;cursor:pointer}
+
+/* Songs */
+.cat{margin-top:26px}
+.cat h2{font-size:1.3rem;margin:0 0 10px;font-weight:800}
+.songs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.song{background:var(--paper);border-radius:18px;border:1px solid var(--line);overflow:hidden}
+.song.open{grid-column:1/-1}
+.tile{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;min-height:72px;padding:14px;cursor:pointer;font-family:var(--font);font-weight:800;font-size:1.12rem;line-height:1.15;color:var(--ink)}
+.tile:focus-visible{outline:3px solid var(--ink);outline-offset:-3px;border-radius:18px}
+.tile .pips{display:flex;gap:3px;flex-shrink:0}
+.tile .pips i{width:9px;height:9px;border-radius:50%;display:block}
+.tile .t{flex:1}
+.tile .chev{flex-shrink:0;transition:transform .15s;font-size:1rem;color:var(--soft)}
+.song.open .chev{transform:rotate(180deg)}
+.body{display:none;padding:0 14px 16px}
+.song.open .body{display:block}
+.bodytop{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.song .meta{color:var(--soft);font-size:.9rem;margin:0;flex:1;min-width:180px}
+.phrase{display:flex;flex-wrap:wrap;gap:6px 5px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.phrase:last-child{border-bottom:none}
+.cell{display:flex;flex-direction:column;align-items:center;min-width:36px}
+.dot{height:36px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);transition:transform .1s, box-shadow .1s}
+.dot.moved{outline:3px dashed var(--ink);outline-offset:2px}
+.syl{font-size:.9rem;color:var(--soft);margin-top:3px;white-space:nowrap}
+.rest{width:14px;height:36px;display:flex;align-items:center;justify-content:center}
+.rest::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--line)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:14px 0 0;padding:10px 12px;border-radius:14px;background:var(--paper);border:1px solid var(--line);font-size:.9rem;color:var(--soft)}
+.legend .it{display:flex;align-items:center;gap:8px}
+.legend .dot{height:24px;width:24px;font-size:.8rem;border-radius:12px;background:var(--n5);color:var(--t5)}
+.legend .dot.long{width:46px}
+.legend .rest{height:24px}
+.movednote{display:flex;align-items:center;gap:10px;margin:8px 0 2px;padding:8px 10px;border-radius:12px;background:var(--bg);font-size:.9rem;color:var(--ink)}
+.movednote .dot{height:26px;width:26px;font-size:.8rem;border-radius:13px;background:var(--n5);color:var(--t5);flex-shrink:0}
+.howto{margin-top:26px;color:var(--soft);font-size:.95rem}
+.howto h2{color:var(--ink);font-size:1.2rem;margin:0 0 6px}
+.howto ul{margin:0;padding-left:20px}
+@media (max-width:420px){
+  .tile{font-size:1rem;min-height:64px;padding:12px}
+  .dot{height:32px;border-radius:16px;font-size:.95rem}
+  .cell{min-width:32px}
+  .swatches{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.dot,.bar,.tile .chev{transition:none}}
+.syl{color:var(--ink)}
+.vsel{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 8px}
+.vsel span{font-size:.9rem;color:var(--soft);margin-right:2px}
+.vsel button{font-family:var(--font);font-weight:800;font-size:1rem;min-width:40px;height:40px;border-radius:20px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;padding:0 10px}
+.vsel button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.vsel button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.vtext{font-size:.95rem;font-weight:600;margin:2px 0 4px 2px}
+.vblock{margin:4px 0 8px;padding:8px 10px;border-radius:12px;background:var(--bg);font-size:.95rem;font-weight:600}
+.vblock p{margin:0}
+.vblock .hint{font-weight:400;color:var(--soft);font-size:.85rem;margin-bottom:4px}
+.vsrc{font-size:.8rem;color:var(--soft);margin:0 0 6px}
+.uses{font-size:.85rem;color:var(--soft);margin:2px 0 0}
+.errbox{margin:16px 0 0;padding:10px 12px;border-radius:12px;border:2px solid #E53935;background:var(--paper);font-size:.9rem}
+.errbox ul{margin:6px 0 0;padding-left:18px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Xylophon-Lieder</h1>
+  <p class="lead">Tippe auf ein Lied, dann siehst du die Noten. Jeder Punkt ist ein Ton. Im Punkt steht der Name des Tons, die Farbe zeigt den Balken. Der lange rote Balken ist das tiefe C, der kurze rosa Balken das hohe C’.</p>
+
+  <div class="xylo" id="xylo" aria-label="Xylophon: Tippe auf einen Balken, dann hörst du ihn"></div>
+
+  <div class="tools">
+    <button class="btn" id="editBtn" aria-expanded="false">Farben ändern</button>
+  </div>
+  <div class="editor" id="editor">
+    <p>Stelle jeden Balken auf die Farbe an deinem Xylophon. Die Seite speichert die Farben auf diesem Gerät.</p>
+    <div class="swatches" id="swatches"></div>
+    <div class="tools"><button class="btn" id="resetBtn">Farben zurücksetzen</button></div>
+  </div>
+
+  <div class="legend keylegend" aria-label="Was die Punkte bedeuten">
+    <span class="it"><span class="dot">G</span>Buchstabe = Ton (Balken mit gleicher Farbe)</span>
+    <span class="it"><span class="dot long">G</span>Breiter Punkt = langer Ton</span>
+    <span class="it"><span class="rest"></span>Grauer Punkt = kurze Pause</span>
+    <span class="it"><span class="dot moved">G</span>Gestrichelter Ring = Ton nach oben verschoben</span>
+    <span class="it"><b>–</b>&nbsp;unter einem Punkt = Silbe weiter halten</span>
+  </div>
+  <div id="cats"></div>
+
+  <section class="howto">
+    <h2>So spielst du</h2>
+    <ul>
+      <li>Tippe auf ein Lied, dann öffnet es sich. Tippe noch einmal auf den Titel, dann schließt es sich.</li>
+      <li>Suche den Balken mit derselben Farbe und demselben Ton wie der Punkt.</li>
+      <li>Schlage jeden Punkt einmal an, von links nach rechts.</li>
+      <li>Bei breiten Punkten wartest du etwas länger.</li>
+      <li>Hat ein Lied mehrere Strophen, wähle die Strophe mit den Zahlen unter dem Titel.</li>
+      <li>Ein Punkt mit gestricheltem Ring ist ein Ton, der für dieses Xylophon zu tief ist. Spiele den Ton im Punkt. Es ist derselbe Ton, eine Oktave höher.</li>
+    </ul>
+  </section>
+</main>
+
+<script type="text/plain" id="lieder-eingebaut"># ============================================================
+# Liederdatei für die Xylophon-App
+# ============================================================
+# Zeilen mit # am Anfang sind Kommentare. Die App liest sie nicht.
+#
+# Kategorie: Name      neue Kategorie (gilt für alle folgenden Lieder)
+# Lied: Titel          neues Lied
+# Info: Text           kurzer Text unter dem Titel
+# Quelle: Text         Hinweis zu den Strophen (optional)
+#
+# Töne: ...            eine Notenzeile. Jeder Ton ist ein Notenname oder eine Balkennummer:
+#   C D E F G A H C'   (C = tiefes C = Balken 1 ... C' = hohes C = Balken 8)
+#   1 2 3 4 5 6 7 8    (gleich, als Nummer)
+#   G      = Ton G (Balken 5), 1 Schlag lang
+#   G:2    = Ton G, 2 Schläge lang (auch 0.5, 1.5, 3, 4 ...)
+#   G*     = Ton G mit gestricheltem Ring (Ton eigentlich eine Oktave tiefer)
+#   -      = kurze Pause (1 Schlag), -:0.5 = halber Schlag
+#   Statt Zahlen gehen auch Farben: rot orange gelb grün dunkelblau hellblau violett pink
+# Text: ...            die Silben zu dieser Notenzeile, eine Silbe pro Ton (Pausen zählen nicht)
+#   Al- le     = Silben eines Wortes, mit Bindestrich
+#   –          = (Gedankenstrich) Silbe über diesen Ton weiter halten
+#   _          = Ton ohne Silbe
+#
+# Strophe 2:           ab hier kommt der Text der 2. Strophe
+#   Text: ...          Silben für die nächste Notenzeile (gehaltene Töne – zählen nicht mit)
+#   =                  diese Notenzeile hat denselben Text wie Strophe 1
+#   Zeile: ...         ganzer Text für diese Notenzeile, ohne Silben-Zuordnung
+#   Ganz: ...          ganze Strophe als freier Text (eine Zeile pro Ganz:)
+#   Passt die Silbenzahl einer Text:-Zeile nicht, zeigt die App sie als ganze Zeile.
+#
+# Beispiel:
+#   Lied: Mein Lied
+#   Info: Von mir.
+#   Töne: C D E F G:2 G:2
+#   Text: Al- le mei- ne Ent- chen
+#   Strophe 2:
+#   Text: Al- le mei- ne Gäns- chen
+# ============================================================
+
+
+
+Kategorie: Klassische Kinderlieder
+
+Lied: Alle meine Entchen
+Info: Volkslied.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: C D E F G:2 G:2
+Text: Al- le mei- ne Ent- chen
+Töne: A A A A G:4
+Text: schwim- men auf dem See,
+Töne: A A A A G:4
+Text: schwim- men auf dem See.
+Töne: F F F F E:2 E:2
+Text: Köpf- chen in das Was- ser,
+Töne: D D D D C:4
+Text: Schwänz- chen in die Höh.
+Strophe 2:
+Text: Al- le mei- ne Gäns- chen
+Text: wat- scheln durch den Grund,
+Text: wat- scheln durch den Grund,
+Text: grün- deln in dem Tüm- pel,
+Text: wer- den ku- gel- rund.
+Strophe 3:
+Text: Al- le mei- ne Hühn- chen
+Text: schar- ren in dem Stroh,
+Text: schar- ren in dem Stroh,
+Text: fin- den sie ein Körn- chen,
+Text: sind sie al- le froh.
+Strophe 4:
+Text: Al- le mei- ne Täub- chen
+Text: gur- ren auf dem Dach,
+Text: gur- ren auf dem Dach,
+Text: fliegt eins in die Lüf- te,
+Text: flie- gen al- le nach.
+
+Lied: Hänschen klein
+Info: Volkslied.
+Töne: G E E:2 F D D:2
+Text: Hän- schen klein ging al- lein
+Töne: C D E F G G G:2
+Text: in die wei- te Welt hin- ein.
+Töne: G E E:2 F D D:2
+Text: Stock und Hut steht ihm gut,
+Töne: C E G G C:4
+Text: ist gar wohl- ge- mut.
+Töne: D D D D D E F:2
+Text: A- ber Mut- ter wei- net sehr,
+Töne: E E E E E F G:2
+Text: hat ja nun kein Häns- chen mehr.
+Töne: G E E:2 F D D:2
+Text: Da be- sinnt sich das Kind,
+Töne: C E G G C:4
+Text: eilt nach Haus ge- schwind.
+
+Lied: Es tanzt ein Bi-Ba-Butzemann (Version 1)
+Info: Volkslied, Fassung aus Thüringen und Hessen (Essen-Sammlung). „di-del“ auf einem Punkt singen.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Der Refrain ist in allen Strophen gleich.
+Töne: G*:0.5 C E G C' A:0.75 A:0.25 A:0.5
+Text: Es tanzt ein Bi- Ba- But- ze- mann
+Töne: A:0.5 G:0.5 F:0.5 E:0.5 D:0.5 C:0.5 E:0.5 G:0.5
+Text: in un- serm Haus he- rum, di-del- dum,
+Töne: G*:0.5 C E G C' A:0.75 A:0.25 A:0.5
+Text: es tanzt ein Bi- Ba- But- ze- mann
+Töne: A:0.5 G:0.5 F:0.5 E:0.5 D:0.5 C -:0.5
+Text: in un- serm Haus he- rum.
+Töne: E:0.5 D:0.5 E:0.5 F:0.5 D:0.5 E:0.5 F:0.5 G:0.5
+Text: Er rüt- telt sich, er schüt- telt sich,
+Töne: E:0.5 D:0.5 E:0.5 F:0.5 D:0.5 E:0.5 F:0.5 G:0.5
+Text: er wirft sein Säck- lein hin- ter sich.
+Töne: G*:0.5 C E G C' A:0.75 A:0.25 A:0.5
+Text: Es tanzt ein Bi- Ba- But- ze- mann
+Töne: A:0.5 G:0.5 F:0.5 E:0.5 D:0.5 C
+Text: in un- serm Haus he- rum.
+Strophe 2:
+=
+=
+=
+=
+Text: Er wirft sein Säck- lein her und hin,
+Text: Was ist wohl in dem Säck- lein drin?
+Strophe 3:
+=
+=
+=
+=
+Text: Er bringt zur Nacht dem gu- ten Kind
+Text: Die Äp- fel die im Säck- lein sind.
+Strophe 4:
+=
+=
+=
+=
+Text: Er wirft sein Säck- lein hin und her,
+Text: Am Mor- gen ist es wie- der leer.
+
+Lied: Es tanzt ein Bi-Ba-Butzemann (Version 2)
+Info: Ihre Fassung mit F (Balken 4) als Grundton. Sie stimmt mit dem Liederbuch „Kinder wollen singen“ überein. Nur der Refrain.
+Töne: C F F C' C' A A F F
+Text: Es tanzt ein Bi- Ba- But- ze- mann in
+Töne: G G C C F F:0.5 A:0.5 C'
+Text: un- serm Haus he- rum, di- del- dum,
+Töne: C F F C' C' A A F F
+Text: es tanzt ein Bi- Ba- But- ze- mann in
+Töne: G G C C F:3
+Text: un- serm Haus he- rum.
+
+Lied: Kuckuck, Kuckuck, ruft’s aus dem Wald
+Info: Melodie aus Österreich, Text von Hoffmann von Fallersleben (1835).
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: G E - G E - F E D C:2 -
+Text: Ku- ckuck, Ku- ckuck, ruft’s aus dem Wald.
+Töne: D D E F:2 D
+Text: Las- set uns sin- gen,
+Töne: E E F G:2 E
+Text: tan- zen und sprin- gen!
+Töne: G E - G E - F E D C:2 -
+Text: Früh- ling, Früh- ling, wird es nun bald.
+Strophe 2:
+Text: Ku- ckuck, Ku- ckuck, lässt nicht sein Schrei’n:
+Text: Komm in die Fel- der,
+Text: Wie- sen und Wäl- der.
+Text: Früh- ling, Früh- ling, stel- le dich ein.
+Strophe 3:
+Text: Ku- ckuck, Ku- ckuck, treff- li- cher Held.
+Text: Was du ge- sun- gen,
+Text: ist dir ge- lun- gen.
+Text: Win- ter, Win- ter räu- met das Feld.
+
+Lied: Häschen in der Grube
+Info: Volkslied. „schlief“ über zwei Punkte halten.
+Töne: C:0.5 D:0.5 E:0.5 F:0.5 G G
+Text: Häs- chen in der Gru- be
+Töne: A C':0.5 A:0.5 G -
+Text: saß und schlief, –
+Töne: G:0.5 F:0.5 F:0.5 F:0.5 F:0.5 E:0.5 E
+Text: Ar- mes Häs- chen, bist du krank,
+Töne: E:0.5 D:0.5 D:0.5 D:0.5 D:0.5 C:0.5 C
+Text: dass du nicht mehr hüp- fen kannst?
+Töne: C:0.5 E:0.5 G G:0.5 E:0.5 C
+Text: Häs- chen hüpf! Häs- chen hüpf!
+
+Lied: Backe, backe Kuchen
+Info: Volkslied.
+Töne: G:0.5 G:0.5 A:0.5 A:0.5 G E:0.5
+Text: Ba- cke, ba- cke Ku- chen,
+Töne: E:0.5 G:0.5 G:0.5 A:0.5 A:0.5 G E:0.5 -:0.5
+Text: der Bä- cker hat ge- ru- fen.
+Töne: G:0.5 G:0.5 A:0.5 A:0.5 G:0.5 G:0.5 E:0.5 E:0.5
+Text: Wer will gu- ten Ku- chen ba- cken,
+Töne: G:0.5 G:0.5 A:0.5 A:0.5 G:0.5 G:0.5 E:0.5 E:0.5
+Text: der muss ha- ben sie- ben Sa- chen:
+Töne: G:0.25 G:0.25 G:0.5 E G:0.25 G:0.25 G:0.5 E
+Text: Ei- er und Schmalz, But- ter und Salz,
+Töne: G:0.5 G:0.5 E G:0.5 G:0.5 A:0.5 A:0.5 G:0.5 G:0.5 E
+Text: Milch und Mehl, Saf- ran macht den Ku- chen gehl.
+Töne: C' G:0.5 E:0.5 D:0.5 C:0.5 C
+Text: Schieb, schieb in’n O- fen ’nein!
+
+Lied: Fuchs, du hast die Gans gestohlen
+Info: Volkslied.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: C:0.5 D:0.5 E:0.5 F:0.5 G:0.5 G:0.5 G:0.5 G:0.5
+Text: Fuchs, du hast die Gans ge- stoh- len,
+Töne: A:0.5 F:0.5 C':0.5 A:0.5 G -
+Text: gib sie wie- der her,
+Töne: A:0.5 F:0.5 C':0.5 A:0.5 G -
+Text: gib sie wie- der her!
+Töne: G:0.5 F:0.5 F:0.5 F:0.5 F:0.5 E:0.5 E:0.5 E:0.5
+Text: Sonst wird dich der Jä- ger ho- len
+Töne: E:0.5 D:0.5 D:0.5 G*:0.5 E -
+Text: mit dem Schieß- ge- wehr,
+Töne: G:0.5 F:0.5 F:0.5 F:0.5 F:0.5 E:0.5 E:0.5 E:0.5
+Text: sonst wird dich der Jä- ger ho- len
+Töne: E:0.5 D:0.5 D:0.5 E:0.5 C
+Text: mit dem Schieß- ge- wehr.
+Strophe 2:
+Text: Sei- ne gro- ße, lan- ge Flin- te
+Text: schießt auf dich das Schrot,
+Text: schießt auf dich das Schrot,
+Text: dass dich färb die ro- te Tin- te
+Text: und dann bist du tot,
+Text: dass dich färb die ro- te Tin- te
+Text: und dann bist du tot.
+Strophe 3:
+Text: Lie- bes Füchs- lein, lass dir ra- ten,
+Text: sei doch nur kein Dieb,
+Text: sei doch nur kein Dieb!
+Text: Nimm, du brauchst nicht Gän- se- bra- ten,
+Text: mit der Maus vor- lieb,
+Text: nimm, du brauchst nicht Gän- se- bra- ten,
+Text: mit der Maus vor- lieb!
+
+Lied: Bruder Jakob
+Info: Volkslied (französisch „Frère Jacques“).
+Quelle: Strophen 2–4 auf Französisch, Englisch und Spanisch, aus „Kinder wollen singen“. Auf Spanisch „me‿us“ auf einem Ton singen.
+Töne: C D E C C D E C
+Text: Bru- der Ja- kob, Bru- der Ja- kob,
+Töne: E F G:2 E F G:2
+Text: schläfst du noch? schläfst du noch?
+Töne: G:0.5 A:0.5 G:0.5 F:0.5 E C
+Text: Hörst du nicht die Glo- cken?
+Töne: G:0.5 A:0.5 G:0.5 F:0.5 E C
+Text: Hörst du nicht die Glo- cken?
+Töne: C G* C:2 C G* C:2
+Text: Ding, dang, dong. Ding, dang, dong.
+Strophe 2:
+Text: Frè- re Jac- ques, Frè- re Jac- ques,
+Text: Dor- mez- vous? Dor- mez- vous?
+Text: Son- nez les ma- ti- nes,
+Text: son- nez les ma- ti- nes,
+Text: Ding ding dong, ding ding dong!
+Strophe 3:
+Text: Are you sleep- ing, are you sleep- ing,
+Text: bro- ther John? Bro- ther John?
+Text: Mor- ning bells are ring- ing,
+Text: mor- ning bells are ring- ing.
+Text: Ding dang dong, ding dang dong!
+Strophe 4:
+Text: Fray San- tia- go, fray San- tia- go,
+Text: duer- me‿us- ted? Duer- me‿us- ted?
+Text: Sue- nan las cam- pa- nas,
+Text: sue- nan las cam- pa- nas?
+Text: Din din don, din din don!
+
+Lied: Hopp, hopp, hopp, Pferdchen, lauf Galopp
+Info: Text von Carl Hahn (1807), Melodie aus der Essen-Sammlung.
+Quelle: Strophen 2–4: Text von Carl Hahn, nach Mama Lisa’s World.
+Töne: C E G -
+Text: Hopp, hopp, hopp,
+Töne: G:0.5 F:0.5 E:0.5 D:0.5 C -
+Text: Pferd- chen, lauf Ga- lopp!
+Töne: D:0.5 D:0.5 H*:0.5 G*:0.5 G:0.5 G:0.5 E:0.5 C:0.5
+Text: Ü- ber Stock und ü- ber Stei- ne,
+Töne: D:0.5 D:0.5 H*:0.5 G*:0.5 G:0.5 G:0.5 E:0.5 C:0.5
+Text: a- ber brich dir nicht die Bei- ne!
+Töne: C:0.5 D:0.5 E:0.5 F:0.5 G -
+Text: Hopp, hopp, hopp, hopp, hopp,
+Töne: G:0.5 F:0.5 E:0.5 D:0.5 C
+Text: Pferd- chen, lauf Ga- lopp!
+Strophe 2:
+Text: Tip, tip, tap!
+Text: Wirf mich nur nicht ab!
+Text: Zäh- me dei- ne wil- den Trie- be,
+Text: Pferd- chen, tu es mir zu- lie- be:
+Text: Tip, tip, tip, tip, tap!
+Text: Wirf mich nur nicht ab!
+Strophe 3:
+Text: Brr, brr, he!
+Text: Steh doch, Pferd- chen, steh!
+Text: Sollst schon heu- te wei- ter- sprin- gen,
+Text: Muß dir nur erst Fut- ter brin- gen.
+Text: Brr, brr, brr, brr, he!
+Text: Steh doch, Pferd- chen, steh!
+Strophe 4:
+Text: Ha, ha, ha!
+Text: Hei, nun sind wir da!
+Text: Die- ner, Die- ner, lie- be Mut- ter,
+Text: Fin- det auch mein Pferd- chen Fut- ter?
+Text: Ha, ha, ha, ha, ha!
+Text: Hei, nun sind wir da!
+
+Lied: Machet auf das Tor
+Info: Singspiel (Essen-Sammlung). Kurze Fassung aus der Quelle.
+Töne: C:0.5 E:0.5 G G E
+Text: Ma- chet auf das Tor,
+Töne: C:0.5 E:0.5 G G E
+Text: ma- chet auf das Tor,
+Töne: C' H A G F E:2 C
+Text: es kommt ein gold- ner Wa- gen.
+
+Lied: O du lieber Augustin
+Info: Wiener Volkslied, nur der Refrain (Essen-Sammlung). Walzer: 1-2-3 zählen.
+Töne: G:1.5 A:0.5 G:0.5 F:0.5 E C C
+Text: O du lie- ber Au- gu- stin,
+Töne: D G* G* E C C
+Text: Au- gu- stin, Au- gu- stin,
+Töne: G:1.5 A:0.5 G:0.5 F:0.5 E C C
+Text: o du lie- ber Au- gu- stin,
+Töne: D G* G* C -:2
+Text: al- les ist hin.
+
+Lied: Die Vogelhochzeit
+Info: Volkslied. Melodie aus „Kinder wollen singen“, von G nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Die Strophen haben verschieden viele Silben. Darum steht ihr Text als ganze Zeile unter den Noten.
+Töne: E:0.5 G:0.5 E:0.5 G:0.5 E:0.5 F:0.5 D:0.5 F:0.5 D:0.5
+Text: Ein Vo- gel woll- te Hoch- zeit ma- chen
+Töne: E:0.5 C:0.5 G:0.5 E:0.5 D:0.5 G:0.5 G:0.5
+Text: in dem grü- nen Wal- – de.
+Töne: G:0.25 E:0.25 C:0.5 C:0.5 C:0.5
+Text: Fi- de- ral- la- la,
+Töne: G:0.25 E:0.25 D:0.5 D:0.5 D:0.5
+Text: fi- de- ral- la- la,
+Töne: G:0.25 F:0.25 E:0.5 C:0.5 D:0.5 H*:0.5 C:1.5
+Text: fi- de- ral- la- la- la- la!
+Strophe 2:
+Zeile: Der Stiglitz war der Bräutigam,
+Zeile: er singt zu Gottes Gloriam.
+Strophe 3:
+Zeile: Die Amsel war die Braute,
+Zeile: trug einen Kranz von Raute.
+Strophe 4:
+Zeile: Der Sperber, der Sperber,
+Zeile: der war der Hochzeitswerber.
+Strophe 5:
+Zeile: Der Stare, der Stare,
+Zeile: der flocht’ der Braut die Haare.
+Strophe 6:
+Zeile: Der Uhu, der Uhu,
+Zeile: der bringt der Braut die Hochzeitsschuh’.
+Strophe 7:
+Zeile: Der Sperling, der Sperling,
+Zeile: der bringt der Braut den Fingerring.
+Strophe 8:
+Zeile: Die Taube, die Taube,
+Zeile: die bringt der Braut die Haube.
+Strophe 9:
+Zeile: Die Lerche, die Lerche,
+Zeile: die führt die Braut zur Kerche.
+Strophe 10:
+Zeile: Brautmutter war die Eule,
+Zeile: nahm Abschied mit Geheule.
+Strophe 11:
+Zeile: Der Auerhahn, der Auerhahn,
+Zeile: der war der stolze Herr Kaplan.
+Strophe 12:
+Zeile: Die Meise, die Meise,
+Zeile: die singt das Kyrie leise.
+Strophe 13:
+Zeile: Der Wiedehopf, der Wiedehopf,
+Zeile: der brachte gleich den Suppentopf.
+Strophe 14:
+Zeile: Die Schnepfe, die Schnepfe
+Zeile: setzt’ auf den Tisch die Näpfe.
+Strophe 15:
+Zeile: Die Finken, die Finken,
+Zeile: die gaben der Braut zu trinken.
+Strophe 16:
+Zeile: Der Storch mit seinem langen Schnabel,
+Zeile: bracht’ das Messer und die Gabel.
+Strophe 17:
+Zeile: Die Puten, die Puten,
+Zeile: die machten breite Schnuten.
+Strophe 18:
+Zeile: Die Gänse und die Anten,
+Zeile: die war’n die Musikanten.
+Strophe 19:
+Zeile: Der Pfau mit seinem bunten Schwanz
+Zeile: tat mit der Braut den ersten Tanz.
+Strophe 20:
+Zeile: Frau Nachtigall, Frau Nachtigall,
+Zeile: die sang mit ihrem schönsten Schall.
+Strophe 21:
+Zeile: Der Geier, der Geier,
+Zeile: der spielte auf der Leier.
+Strophe 22:
+Zeile: Der Papagei, der Papagei,
+Zeile: der machte drob ein groß’ Geschrei.
+Strophe 23:
+Zeile: Der lange Specht,
+Zeile: der lange Specht, der macht’ der Braut das Bett zurecht.
+Strophe 24:
+Zeile: Das Drosselein, das Drosselein,
+Zeile: das führt die Braut ins Kämmerlein.
+Strophe 25:
+Zeile: Der Hahn,
+Zeile: der krähet: „Gute Nacht“, nun wird die Kammer zugemacht.
+Strophe 26:
+Zeile: Der Uhu, der Uhu,
+Zeile: der schlug die Fensterläden zu.
+Strophe 27:
+Zeile: Die Fledermaus, die Fledermaus,
+Zeile: die zog der Braut die Strümpfe aus.
+Strophe 28:
+Zeile: Die Vogelhochzeit ist nun aus,
+Zeile: die Vögel fliegen all’ nach Haus.
+Strophe 29:
+Zeile: Das Käuzchen bläst die Lichter aus
+Zeile: und alle zieh’n vergnügt nach Haus.
+
+Lied: Alle Vögel sind schon da
+Info: Text von Hoffmann von Fallersleben. Melodie aus „Kinder wollen singen“, von D nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: C:1.5 E:0.5 G C' A C':0.5 A:0.5 G:2
+Text: Al- le Vö- gel sind schon – da,
+Töne: F:1.5 G:0.5 E C D:2 C:2
+Text: al- le Vö- gel, al- le!
+Töne: G G F F E G:0.5 E:0.5 D:2
+Text: Welch ein Sin- gen, Mu- si- – ziern,
+Töne: G G F F E G:0.5 E:0.5 D:2
+Text: Pfei- fen, Zwit- schern, Ti- ri- – liern!
+Töne: C:1.5 E:0.5 G C' A C':0.5 A:0.5 G:2
+Text: Früh- ling will nun ein- mar- – schiern,
+Töne: F:1.5 G:0.5 E C D:2 C:2
+Text: kommt mit Sang und Schal- le.
+Strophe 2:
+Text: Wie sie al- le lus- tig sind,
+Text: flink und froh sich re- gen!
+Text: Am- sel, Dros- sel, Fink und Star
+Text: und die gan- ze Vo- gel- schar
+Text: wün- schen dir ein fro- hes Jahr,
+Text: lau- ter Heil und Se- gen.
+Strophe 3:
+Text: Was sie uns ver- kün- den nun,
+Text: neh- men wir zu Her- zen:
+Text: Wir auch wol- len lus- tig sein,
+Text: lus- tig wie die Vö- ge- lein,
+Text: hier und dort, feld- aus, feld- ein,
+Text: sin- gen, sprin- gen, scher- zen.
+
+Lied: Summ, summ, summ
+Info: Text von Hoffmann von Fallersleben. Melodie aus „Kinder wollen singen“, von F nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: G F E:2
+Text: Summ, summ, summ,
+Töne: D:0.5 E:0.5 F:0.5 D:0.5 C:2
+Text: Bien- chen summ her- um.
+Töne: E:0.5 F:0.5 G:0.5 E:0.5 D:0.5 E:0.5 F:0.5 D:0.5
+Text: Ei, wir tun dir nichts zu Lei- de,
+Töne: E:0.5 F:0.5 G:0.5 E:0.5 D:0.5 E:0.5 F:0.5 D:0.5
+Text: flieg nur aus in Wald und Hei- de,
+Töne: G F E:2
+Text: summ, summ, summ,
+Töne: D:0.5 E:0.5 F:0.5 D:0.5 C:2
+Text: Bien- chen summ her- um.
+Strophe 2:
+=
+=
+Text: Such in Blu- men, such in Blüm- chen,
+Text: dir ein Tröpf- chen, dir ein Krüm- chen.
+Strophe 3:
+=
+=
+Text: Keh- re heim mit rei- cher Ha- be,
+Text: bau uns man- che vol- le Wa- be.
+
+Lied: Hot Cross Buns
+Info: Englisches Volkslied.
+Töne: E D C:2 E D C:2
+Text: Hot cross buns! Hot cross buns!
+Töne: C:0.5 C:0.5 C:0.5 C:0.5 D:0.5 D:0.5 D:0.5 D:0.5
+Text: One a pen- ny, two a pen- ny,
+Töne: E D C:2
+Text: hot cross buns!
+
+Lied: Mary Had a Little Lamb
+Info: Englisches Volkslied (Text 1830).
+Töne: E D C D E E E:2
+Text: Ma- ry had a lit- tle lamb,
+Töne: D D D:2 E G G:2
+Text: lit- tle lamb, lit- tle lamb,
+Töne: E D C D E E E E
+Text: Ma- ry had a lit- tle lamb, its
+Töne: D D E D C:4
+Text: fleece was white as snow.
+
+Lied: London Bridge Is Falling Down
+Info: Englisches Volkslied.
+Töne: G:1.5 A:0.5 G F E F G:2
+Text: Lon- don Bridge is fall- ing down,
+Töne: D E F:2 E F G:2
+Text: fall- ing down, fall- ing down,
+Töne: G:1.5 A:0.5 G F E F G:2
+Text: Lon- don Bridge is fall- ing down,
+Töne: D:2 G:2 E C:3
+Text: my fair la- dy.
+
+Lied: Old MacDonald Had a Farm
+Info: Englisches Volkslied. In jeder Strophe ein neues Tier und seinen Laut singen.
+Töne: F F F C D D C:2
+Text: Old Mac- Don- ald had a farm,
+Töne: A A G G F:3
+Text: E- I- E- I- O!
+Töne: C F F F C D D C:2
+Text: And on his farm he had a cow,
+Töne: A A G G F:3
+Text: E- I- E- I- O!
+Töne: C:0.5 C:0.5 F F F:2 C:0.5 C:0.5 F F F:2
+Text: With a moo moo here, and a moo moo there,
+Töne: F:0.5 F:0.5 F F:0.5 F:0.5 F F:0.5 F:0.5 F:0.5 F:0.5 F F
+Text: here a moo, there a moo, ev- ery- where a moo moo.
+Töne: F F F C D D C:2
+Text: Old Mac- Don- ald had a farm,
+Töne: A A G G F:3
+Text: E- I- E- I- O!
+
+Lied: Row, Row, Row Your Boat
+Info: Englisches Volkslied (1852).
+Töne: C:1.5 C:1.5 C D:0.5 E:1.5
+Text: Row, row, row your boat,
+Töne: E D:0.5 E F:0.5 G:3
+Text: gent- ly down the stream.
+Töne: C':0.5 C':0.5 C':0.5 G:0.5 G:0.5 G:0.5
+Text: Mer- ri- ly, mer- ri- ly,
+Töne: E:0.5 E:0.5 E:0.5 C:0.5 C:0.5 C:0.5
+Text: mer- ri- ly, mer- ri- ly,
+Töne: G F:0.5 E D:0.5 C:3
+Text: life is but a dream.
+
+
+Kategorie: Schlaflieder
+
+Lied: Schlaf, Kindlein, schlaf
+Info: Volkslied.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: E D:0.5 D:0.5 C -:0.5
+Text: Schlaf, Kind- lein, schlaf,
+Töne: G*:0.5 E:0.5 E:0.5 D:0.5 D:0.5 C -:0.5
+Text: der Va- ter hüt’ die Schaf,
+Töne: C:0.5 F:0.5 F:0.5 D:0.5 D:0.5 G:0.5 G:0.5 E:0.5
+Text: die Mut- ter schüt- telt’s Bäu- me- lein,
+Töne: E:0.5 F:0.5 F:0.5 D:0.5 D:0.5 G:0.5 G:0.5 E
+Text: da fällt he- rab ein Träu- me- lein.
+Töne: F D:0.5 D:0.5 C
+Text: Schlaf, Kind- lein, schlaf!
+Strophe 2:
+=
+Text: Am Him- mel zieh’n die Schaf’,
+Text: Die Stern- lein sind die Läm- mer- lein,
+Text: Der Mond der ist das Schä- fer- lein,
+Strophe 3:
+=
+Text: Christ- kind- lein hat ein Schaf,
+Text: Ist selbst das lie- be Got- tes- lamm,
+Text: Das um uns all zu To- de kam,
+Strophe 4:
+=
+Text: So schenk ich dir ein Schaf,
+Text: Mit ei- ner gold’- nen Schel- le fein,
+Text: Das soll dein Spiel- ge- sel- le sein,
+Strophe 5:
+=
+Text: Und blök nicht wie ein Schaf,
+Text: Sonst kommt des Schä- fers Hün- de- lein,
+Text: Und beißt mein bö- ses Kin- de- lein,
+Strophe 6:
+=
+Text: Geh fort und hüt die Schaf,
+Text: Geh fort, du schwar- zes Hün- de- lein,
+Text: Und weck mir nicht mein Kin- de- lein,
+
+Lied: Der Mond ist aufgegangen
+Info: Melodie von J. A. P. Schulz (1790), Text von Matthias Claudius.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: C D C F E D:2 C
+Text: Der Mond ist auf- ge- gan- gen,
+Töne: E E E A G F:2 E
+Text: die gold- nen Stern- lein pran- gen
+Töne: E E E F E D:2 -
+Text: am Him- mel hell und klar.
+Töne: C D C F E D:2 C
+Text: Der Wald steht schwarz und schwei- get,
+Töne: E E E A G F:2 E
+Text: und aus den Wie- sen stei- get
+Töne: E E E F E D D C:2
+Text: der wei- ße Ne- bel wun- der- bar.
+Strophe 2:
+Text: Wie ist die Welt so stil- le,
+Text: Und in der Dämm’- rung Hül- le
+Text: So trau- lich und so hold,
+Text: Als ei- ne stil- le Kam- mer,
+Text: Wo ihr des Ta- ges Jam- mer
+Text: Ver- schla- fen und ver- ges- sen sollt.
+Strophe 3:
+Text: Seht ihr den Mond dort ste- hen?
+Text: Er ist nur halb zu se- hen,
+Text: Und ist doch rund und schön.
+Text: So sind wohl man- che Sa- chen,
+Text: Die wir ge- trost be- la- chen,
+Text: Weil uns’- re Au- gen sie nicht seh’n.
+Strophe 4:
+Text: Wir stol- zen Men- schen- kin- der
+Text: Sind ei- tel ar- me Sün- der,
+Text: Und wis- sen gar nicht viel;
+Text: Wir spin- nen Luft- ge- spins- te,
+Text: Und su- chen vie- le Küns- te,
+Text: Und kom- men wei- ter von dem Ziel.
+Strophe 5:
+Text: Gott, lass uns dein Heil schau- en,
+Text: Auf nichts Ver- gäng- lich’s trau- en,
+Text: Nicht Ei- tel- keit uns freu’n.
+Text: Lass uns ein- fäl- tig wer- den,
+Text: Und vor dir hier auf Er- den
+Text: Wie Kin- der fromm und fröh- lich sein.
+Strophe 6:
+Text: Wollst end- lich son- der Grä- men
+Text: Aus die- ser Welt uns neh- men
+Text: Durch ei- nen sanf- ten Tod.
+Text: Und wenn du uns ge- nom- men,
+Text: Lass uns in’n Him- mel kom- men,
+Text: Du un- ser Herr und un- ser Gott.
+Strophe 7:
+Text: So legt euch denn, ihr Brü- der,
+Text: In Got- tes Na- men nie- der;
+Text: Kalt ist der A- bend- hauch.
+Text: Ver- schon uns, Gott, mit Stra- fen,
+Text: Und lass uns ru- hig schla- fen,
+Text: Und un- ser’n kran- ken Nach- barn auch.
+
+Lied: Wer hat die schönsten Schäfchen?
+Info: Text von Hoffmann von Fallersleben. Melodie aus dem Liederbuch LiberCantorum, von F nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: C G G F F E:2 D
+Text: Wer hat die schön- sten Schäf- chen?
+Töne: G G C F E D:2 -
+Text: Die hat der gol- d’ne Mond,
+Töne: D F F E E A:2 G
+Text: der hin- ter un- sern Bäu- men
+Töne: F E E D D C:2 -
+Text: am Him- mel dro- ben wohnt.
+Strophe 2:
+Text: Er kommt am spä- ten A- bend,
+Text: wenn al- les schla- fen will,
+Text: her- vor aus sei- nem Hau- se
+Text: am Him- mel leis’ und still.
+Strophe 3:
+Text: Dann wei- det er die Schäf- chen
+Text: auf sei- ner blau- en Flur;
+Text: denn all die wei- ßen Ster- ne
+Text: sind sei- ne Schäf- chen nur.
+Strophe 4:
+Text: Sie tun sich nichts zu- lei- de,
+Text: hat eins das and’- re gern,
+Text: und Schwes- tern sind und Brü- der
+Text: da dro- ben Stern an Stern.
+Strophe 5:
+Text: Und soll ich dir eins brin- gen,
+Text: so darfst du nie- mals schrei’n,
+Text: musst freund- lich wie die Schäf- chen
+Text: und wie die Schä- fer sein.
+
+Lied: Weißt du, wie viel Sternlein stehen
+Info: Text von Wilhelm Hey (1837), Volksweise. Melodie aus „Kinder wollen singen“, von D nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: C:0.5 D:0.5 E E F:0.5 D:0.5 A:0.5 G:0.5 G
+Text: Weißt du, wie viel’ Stern- lein ste- – hen,
+Töne: E:0.5 G:0.5 G:0.5 F:0.5 F G:0.5 F:0.5 E:2
+Text: an dem blau- – en Him- mels- zelt?
+Töne: C:0.5 D:0.5 E E F:0.5 D:0.5 A:0.5 G:0.5 G
+Text: Weißt du, wie viel Wol- ken zie- – hen,
+Töne: E:0.5 G:0.5 G:0.5 F:0.5 F G:0.5 F:0.5 E:2
+Text: weit- hin ü- – ber al- le Welt?
+Töne: G:0.5 E:0.5 E:0.5 D:0.5 D A:0.5 F:0.5 F:0.5 E:0.5 E
+Text: Gott, der Herr – hat sie ge- zäh- – let,
+Töne: G:0.5 E:0.5 E:0.5 D:0.5 D A:0.5 F:0.5 F:0.5 E:0.5 E
+Text: dass ihm auch – nicht ei- nes feh- – let
+Töne: C:0.5 D:0.5 E E F:0.5 D:0.5 A G
+Text: an der gan- zen gro- ßen Zahl, –
+Töne: E:0.5 G:0.5 G:0.5 F:0.5 F G:0.5 F:0.5 E:2
+Text: an der gan- – zen gro- ßen Zahl.
+Strophe 2:
+Text: Weißt du, wie viel’ Mück- lein spie- len,
+Text: in der hei- ßen Son- nen- glut?
+Text: Wie viel’ Fisch- lein auch sich küh- len,
+Text: in der hel- len Was- ser- flut?
+Text: Gott, der Herr rief sie mit Na- men,
+Text: dass sie all’ ins Le- ben ka- men,
+Text: dass sie nun so fröh- lich sind,
+Text: dass sie nun so fröh- lich sind.
+Strophe 3:
+Text: Weißt du, wie viel’ Kin- der frü- he
+Text: steh’n aus ih- ren Bett- lein auf?
+Text: Dass sie oh- ne Sorg’ und Mü- he
+Text: fröh- lich sind im Ta- ges- lauf?
+Text: Gott im Him- mel hat an al- len
+Text: sei- ne Lust, sein Wohl ge- fal- len,
+Text: kennt auch dich und hat dich lieb,
+Text: kennt auch dich und hat dich lieb.
+
+Lied: Müde bin ich, geh zur Ruh
+Info: Text von Luise Hensel (1817). Melodie aus der Essen-Sammlung (Böhme), von G nach C verschoben.
+Quelle: Text nach hymnary.org. In Strophe 4 habe ich zwei Tippfehler der Quelle verbessert („schließe“, „Welt“).
+Töne: C:1.5 C:0.5 C:0.5 C:0.5 H*:0.5 C:0.5 D:2 -:2
+Text: Mü- de bin ich, geh zur Ruh,
+Töne: D:1.5 D:0.5 D:0.5 D:0.5 C:0.5 D:0.5 E:2 -:2
+Text: schlie- ße mei- ne Äug- lein zu:
+Töne: E:1.5 E:0.5 E:0.5 E:0.5 D:0.5 C:0.5 A:2 -:2
+Text: Va- ter, lass die Au- gen dein
+Töne: G:1.5 A:0.5 G:0.5 F:0.5 A*:0.5 H*:0.5 C:2
+Text: ü- ber mei- nem Bet- te sein.
+Strophe 2:
+Text: Hab ich Un- recht heut ge- tan,
+Text: Sieh es, lie- ber Gott, nicht an.
+Text: Dei- ne Gnad und Chris- ti Blut
+Text: Macht ja al- len Scha- den gut.
+Strophe 3:
+Text: Al- le, die mir sind ver- wandt,
+Text: Gott, lass ruhn in dei- ner Hand;
+Text: Al- le Men- schen groß und klein
+Text: Sol- len dir be- foh- len sein.
+Strophe 4:
+Text: Kran- ken Her- zen sen- de Ruh,
+Text: Nas- se Au- gen schlie- ße zu.
+Text: Lass den Mond am Him- mel stehn
+Text: Und die stil- le Welt be- sehn.
+
+Lied: Twinkle, Twinkle, Little Star
+Info: Englisch, Text von Jane Taylor (1806).
+Quelle: Strophen 2–5: Gedicht „The Star“ von Jane Taylor (1806). Die Zeilen 5 und 6 wie in Strophe 1 singen. Zwei Zeilen haben eine Silbe mehr. Sie stehen als ganze Zeile unter den Noten.
+Töne: C C G G A A G:2
+Text: Twin- kle, twin- kle, lit- tle star,
+Töne: F F E E D D C:2
+Text: how I won- der what you are.
+Töne: G G F F E E D:2
+Text: Up a- bove the world so high,
+Töne: G G F F E E D:2
+Text: like a dia- mond in the sky.
+Töne: C C G G A A G:2
+Text: Twin- kle, twin- kle, lit- tle star,
+Töne: F F E E D D C:2
+Text: how I won- der what you are.
+Strophe 2:
+Text: When the blaz- ing sun is gone,
+Text: When he noth- ing shines up- on,
+Text: Then you show your lit- tle light,
+Text: Twin- kle, twin- kle, all the night.
+Strophe 3:
+Text: Then the trav’l- ler in the dark,
+Text: Thanks you for your ti- ny spark,
+Zeile: He could not see which way to go,
+Text: If you did not twin- kle so.
+Strophe 4:
+Text: In the dark blue sky you keep,
+Zeile: And often thro’ my curtains peep,
+Text: For you nev- er shut your eye,
+Text: Till the sun is in the sky.
+Strophe 5:
+Text: ’Tis your bright and ti- ny spark,
+Text: Lights the trav’l- ler in the dark:
+Text: Tho’ I know not what you are,
+Text: Twin- kle, twin- kle, lit- tle star.
+
+
+Kategorie: Weihnachten
+
+Lied: Morgen kommt der Weihnachtsmann
+Info: Text von Hoffmann von Fallersleben (1835), alte französische Melodie (dieselbe wie „Twinkle, Twinkle, Little Star“).
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Strophe 3, Zeile 2 nach dem Originaltext von Hoffmann von Fallersleben.
+Töne: C C G G A A G:2
+Text: Mor- gen kommt der Weih- nachts- mann,
+Töne: F F E E D D C:2
+Text: kommt mit sei- nen Ga- – ben.
+Töne: G G F F E E D:2
+Text: Trom- mel, Pfei- fe und Ge- wehr,
+Töne: G G F F E E D:2
+Text: Fahn und Sä- bel und noch mehr,
+Töne: C C G G A A G:2
+Text: ja ein gan- zes Krie- ges- heer
+Töne: F F E E D D C:2
+Text: möcht ich ger- ne ha- – ben.
+Strophe 2:
+Text: Bring’ uns, lie- ber Weih- nachts- mann,
+Text: Bring’ auch mor- gen, brin- ge
+Text: Mus- ke- tier und Gre- na- dier,
+Text: Zot- tel- bär und Pan- ther- tier,
+Text: Ross und E- sel, Schaf und Stier,
+Text: Lau- ter schö- ne Din- ge.
+Strophe 3:
+Text: Doch du weißt ja un- sern Wunsch,
+Text: Kennst ja uns- re Her- zen.
+Text: Kin- der, Va- ter und Ma- ma,
+Text: Auch so- gar der Groß- pa- pa,
+Text: Al- le, al- le sind wir da,
+Text: War- ten dein mit Schmer- zen.
+
+Lied: O du fröhliche
+Info: Text von Johannes Daniel Falk, Melodie aus Sizilien. Melodie aus dem Liederbuch LiberCantorum.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: G:2 A:2 G:1.5 F:0.5 E F
+Text: O du fröh- li- che, –
+Töne: G:2 A:2 G:1.5 F:0.5 E F
+Text: o du se- li- ge, –
+Töne: G:2 G:2 A:2 H C' H:2 A:2 G:4
+Text: gna- den- brin- gen- de Weih- nachts- zeit!
+Töne: D:1.5 E:0.5 D E F:1.5 G:0.5 F:2
+Text: Welt – ging ver- lo- – ren,
+Töne: E:1.5 F:0.5 E F G:1.5 A:0.5 G:2
+Text: Christ – ward ge- bo- – ren:
+Töne: C' H A G C' A G F E:2 D:2 C:4
+Text: Freu- e, – freu- e dich, o Chri- sten- heit! –
+Strophe 2:
+=
+=
+=
+Text: Christ ist er- schie- nen,
+Text: uns zu ver- süh- nen:
+Strophe 3:
+=
+=
+=
+Text: Himm- li- sche Hee- re
+Text: jauch- zen dir Eh- re:
+
+Lied: Alle Jahre wieder
+Info: Text von Wilhelm Hey, Melodie von Friedrich Silcher. Aus „Kinder wollen singen“, von D nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: G:1.5 A:0.5 G F E:2 D:2
+Text: Al- le Jah- re wie- der
+Töne: C D:0.5 E:0.5 F E D:3 -
+Text: kommt das – Chris- tus- kind
+Töne: E G A G C':2 H A
+Text: auf die Er- de nie- der, –
+Töne: G F:0.5 E:0.5 F G E:3 -
+Text: wo wir – Men- schen sind.
+Strophe 2:
+Text: Kehrt mit sei- nem Se- gen
+Text: ein in je- des Haus,
+Text: geht auf al- len We- gen
+Text: mit uns ein und aus.
+Strophe 3:
+Text: Sagt den Men- schen al- len,
+Text: dass ein Va- ter ist,
+Text: dem sie wohl- ge- fal- len,
+Text: der sie nicht ver- gisst.
+Strophe 4:
+Text: Steht auch mir zur Sei- te
+Text: still und un- er- kannt,
+Text: dass es treu mich lei- te
+Text: an der lie- ben Hand.
+
+Lied: Ihr Kinderlein kommet
+Info: Text von Christoph von Schmid (1798), Melodie von J. A. P. Schulz. Aus „Kinder wollen singen“, von D nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: G:0.5 G E:0.5 G:0.5 G E:0.5
+Text: Ihr Kin- der- lein kom- met,
+Töne: G:0.5 F D:0.5 F:0.5 E -:0.5
+Text: oh kom- met doch all!
+Töne: G:0.5 G E:0.5 G:0.5 G E:0.5
+Text: Zur Krip- pe her kom- met
+Töne: G:0.5 F D:0.5 F:0.5 E -:0.5
+Text: in Beth- le- hems Stall
+Töne: E:0.5 D D:0.5 D:0.5 F F:0.5
+Text: und seht was in die- ser
+Töne: F:0.5 E E:0.5 E:0.5 A -:0.5
+Text: hoch- hei- li- gen Nacht
+Töne: A:0.5 G G:0.5 G:0.5 C' G:0.5
+Text: der Va- ter im Him- mel
+Töne: E:0.5 G F:0.5 D:0.5 C:1.5 -:0.5
+Text: für Freu- de uns macht.
+Strophe 2:
+Text: Oh seht in der Krip- pe,
+Text: im nächt- li- chen Stall,
+Text: seht hier bei des Licht- leins
+Text: hell- glän- zen- dem Strahl
+Text: in rein- li- chen Win- deln
+Text: das himm- li- sche Kind,
+Text: viel schö- ner und hol- der
+Text: als En- ge- lein sind.
+Strophe 3:
+Text: Da liegt es, das Kind- lein,
+Text: auf Heu und auf Stroh,
+Text: Ma- ri- a und Jo- seph
+Text: be- trach- ten es froh,
+Text: die red- li- chen Hir- ten
+Text: knien be- tend da- vor,
+Text: hoch o- ben schwebt ju- belnd
+Text: der En- ge- lein Chor.
+Strophe 4:
+Text: Oh beugt wie die Hir- ten
+Text: an- be- tend die Knie,
+Text: er- he- bet die Hän- de
+Text: und dan- ket wie sie.
+Text: Stimmt freu- dig ihr Kin- der,
+Text: wer wollt’ sich nicht freu’n?
+Text: Stimmt freu- dig zum Ju- bel
+Text: der En- gel mit ein!
+Strophe 5:
+Text: Oh be- tet „Du lie- bes,
+Text: du gött- li- ches Kind,
+Text: was lei- dest du al- les
+Text: für un- se- re Sünd’
+Text: ach hier in der Krip- pe
+Text: schon Ar- mut und Not,
+Text: am Kreu- ze dort gar noch
+Text: den bit- te- ren Tod.“
+Strophe 6:
+Text: Was ge- ben wir Kin- der,
+Text: was schen- ken wir dir,
+Text: du bes- tes und liebs- tes
+Text: der Kin- der da- für?
+Text: Nichts willst du von Schät- zen
+Text: und Reich- tum der Welt,
+Text: ein Herz nur voll De- mut
+Text: al- lein dir ge- fällt.
+Strophe 7:
+Text: So nimm uns’- re Her- zen
+Text: zum Op- fer denn hin,
+Text: Wir ge- ben sie ger- ne
+Text: mit fröh- li- chem Sinn,
+Text: und ma- che sie hei- lig
+Text: und se- lig wie deins
+Text: und mach sie auf e- wig
+Text: mit dei- nem in eins.
+
+Lied: Lasst uns froh und munter sein
+Info: Nikolauslied, Volksweise. Aus „Kinder wollen singen“.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Töne: G G G:0.5 A:0.5 G:0.5 F:0.5 E E E -
+Text: Lasst uns froh – und – mun- ter sein,
+Töne: F F F:0.5 G:0.5 F:0.5 E:0.5 D D D -
+Text: und uns recht – von – Her- zen freu’n.
+Töne: C D E F G:0.5 A:0.5 G:0.5 A:0.5 G -
+Text: Lus- tig, lus- tig, tra- la- la- la- la,
+Töne: C' G G:0.5 A:0.5 G:0.5 F:0.5 E D G:2
+Text: bald ist Ni- ko- laus- – a- bend da,
+Töne: C' G G:0.5 A:0.5 G:0.5 F:0.5 E D C:2
+Text: bald ist Ni- ko- laus- – a- bend da.
+Strophe 2:
+Ganz: Bald ist unser Kindergarten aus, dann zieh’n wir vergnügt nach Haus.
+Ganz: Lustig, lustig, tralalalala, bald ist Nikolausabend da, bald ist Nikolausabend da.
+Strophe 3:
+Text: Dann stell ich den Tel- ler auf,
+Text: Ni- k’laus legt ge- wiss was drauf.
+Text: Lus- tig, lus- tig, tra- la- la- la- la,
+Text: bald ist Ni- ko- laus- a- bend da,
+Text: bald ist Ni- ko- laus- a- bend da.
+Strophe 4:
+Text: Steht der Tel- ler auf dem Tisch,
+Text: sing ich noch- mals froh und frisch:
+Text: Lus- tig, lus- tig, tra- la- la- la- la,
+Text: bald ist Ni- ko- laus- a- bend da,
+Text: bald ist Ni- ko- laus- a- bend da.
+Strophe 5:
+Text: Wenn ich schlaf, dann träu- me ich:
+Text: Jetzt bringt Ni- k’laus was für mich.
+Text: Lus- tig, lus- tig, tra- la- la- la- la,
+Text: bald ist Ni- ko- laus- a- bend da,
+Text: bald ist Ni- ko- laus- a- bend da.
+Strophe 6:
+Text: Wenn ich auf- ge- stan- den bin,
+Text: lauf ich schnell zum Tel- ler hin.
+Text: Lus- tig, lus- tig, tra- la- la- la- la,
+Text: bald ist Ni- ko- laus- a- bend da,
+Text: bald ist Ni- ko- laus- a- bend da.
+Strophe 7:
+Ganz: Nik’laus ist ein guter Mann, dem man nicht genug danken kann.
+Ganz: Lustig, lustig, tralalalala, bald ist Nikolausabend da, bald ist Nikolausabend da.
+
+Lied: Am Weihnachtsbaume die Lichter brennen
+Info: Text von Hermann Kletke (1841), Melodie traditionell. Aus „Kinder wollen singen“.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Töne: C:0.5 C:0.5 E:0.5 G E:0.5 G:0.5 C':0.5 A:0.5 G E:0.5
+Text: Am Weih- nachts- bau- me die Lich- ter bren- nen,
+Töne: G:0.5 A:0.5 G:0.5 F D G:0.5 G:0.5 E -:0.5
+Text: wie glänzt er fest- lich, lieb und mild,
+Töne: E:0.5 E:0.5 G:0.5
+Text: als spräch’ er:
+Töne: F D:0.5 F:0.5 F:0.5 A:0.5 G E:0.5 E:0.5 E:0.5 G:0.5 F D G:0.5 G:0.5 E -:0.5
+Text: „Wollt ihr in mir er- ken- nen ge- treu- er Hoff- nung stil- les Bild!“
+Strophe 2:
+Ganz: Die Kinder stehen mit hellen Blicken,
+Ganz: das Auge lacht, es lacht das Herz,
+Ganz: oh fröhlich seliges Entzücken!
+Ganz: Die Alten schauen himmelwärts.
+Strophe 3:
+Ganz: Zwei Engel sind hereingetreten,
+Ganz: kein Auge hat sie kommen seh’n,
+Ganz: sie gehn zum Weihnachtstisch und beten,
+Ganz: und wenden wieder sich und geh’n.
+Strophe 4:
+Ganz: Gesegnet seid, ihr alten Leute,
+Ganz: gesegnet sei, du kleine Schar!
+Ganz: Wir bringen Gottes Segen heute
+Ganz: dem braunen wie dem weißen Haar.
+Strophe 5:
+Ganz: Zu guten Menschen, die sich lieben,
+Ganz: schickt uns der Herr als Boten aus,
+Ganz: und seid ihr treu und fromm geblieben,
+Ganz: wir treten wieder in dies Haus.
+Strophe 6:
+Ganz: Kein Ohr hat ihren Spruch vernommen,
+Ganz: unsichtbar jedes Menschen Blick
+Ganz: sind sie gegangen wie gekommen,
+Ganz: doch Gottes Segen blieb zurück.
+
+Lied: Joseph, lieber Joseph mein
+Info: Traditionell. Aus „Kinder wollen singen“, von F nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Töne: G E:0.5 C E:0.5 G A:0.5 G:1.5
+Text: Jo- seph, lie- ber Jo- seph mein,
+Töne: G E:0.5 C E:0.5 G A:0.5 G:1.5
+Text: hilf mir wieg’n mein Kin- de- lein,
+Töne: F F:0.5 F G:0.5 F E:0.5 D E:0.5 G E:0.5 C
+Text: Gott, der wird dein Loh- ner sein im Him- mel- reich,
+Töne: E:0.5 D C:0.5 D E:0.5 C:1.5 C:1.5
+Text: der Jung- frau Sohn Ma- ri- a.
+Strophe 2:
+Text: Jo- seph, lie- ber Jo- seph mein,
+Text: hilf mir wieg’n mein Kin- de- lein,
+Text: Gott, der wird dein Loh- ner sein im Him- mel- reich,
+Text: der Jung- frau Sohn Ma- ri- a.
+Strophe 3:
+Ganz: Gerne, lieb’ Maria mein,
+Ganz: helf ich dir wieg’n das Kindelein.
+Ganz: dass Gott müss’ mein Lohner sein
+Ganz: im Himmelreich, der Jungfrau Sohn Maria.
+Strophe 4:
+Text: Freu dich nun, o Chris- ten- schar,
+Text: der himm- li- sche Kö- nig klar
+Text: nahm die Mensch- heit of- fen- bar, den uns ge- bar
+Text: die rei- ne Magd Ma- ri- a.
+Strophe 5:
+Text: Sü- ßer Je- su, aus- er- kor’n,
+Text: weißt wohl, dass wir war’n ver- lor’n,
+Text: still uns dei- nes Va- ters Zorn, dich hat ge- bor’n
+Text: die rei- ne Magd Ma- ri- a.
+
+Lied: Schneeflöckchen, Weißröckchen
+Info: Text von Hedwig Haberkern, Volksweise. Aus „Kinder wollen singen“, von D nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: E:0.5 F:0.5 G G A D D
+Text: Schnee- – flöck- chen, Weiß- röck- chen,
+Töne: D:0.5 E:0.5 F F G E:2
+Text: wann – kommst du ge- schneit?
+Töne: E:0.5 F:0.5 G G C' H A
+Text: Du – wohnst in den Wol- ken,
+Töne: G:0.5 F:0.5 E:0.5 F:0.5 D:0.5 C:2
+Text: dein – Weg ist so weit.
+Strophe 2:
+Text: Komm, setz dich ans Fens- ter,
+Text: du lieb- li- cher Stern,
+Text: malst Blu- men und Blät- ter,
+Text: wir ha- ben dich gern.
+Strophe 3:
+Text: Schnee- flöck- chen, du deckst uns
+Text: die Blü- me- lein zu,
+Text: dann schla- fen sie si- cher
+Text: in fried- li- cher Ruh’.
+Strophe 4:
+Text: Schnee- flöck- chen, Weiß- röck- chen,
+Text: komm zu uns ins Tal,
+Text: dann bau’n wir den Schnee- mann
+Text: und wer- fen den Ball.
+
+Lied: Vom Himmel hoch, da komm’ ich her
+Info: Text und Melodie von Martin Luther (1535). Aus „Kinder wollen singen“.
+Töne: C':0.5 H A H G A H C' -:0.5
+Text: Vom Him- mel hoch, da komm’ ich her,
+Töne: C':0.5 C' G G E G F E -:0.5
+Text: ich bring’ euch gu- te neu- e Mär,
+Töne: E:0.5 A A G H C' A G -:0.5
+Text: der gu- ten Mär bring’ ich so viel,
+Töne: C':0.5 H A G G F:0.5 E:0.5 D C:2
+Text: da- von ich sing’n und sa- – gen will.
+
+Lied: O Tannenbaum
+Info: Volkslied. Aus „Kinder wollen singen“, von F nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: G* C:0.75 C:0.25 C:1.5 D:0.5 E:0.75 E:0.25 E:1.5
+Text: O Tan- nen- baum, o Tan- nen- baum,
+Töne: E:0.5 D:0.5 E:0.5 F H* D C -:0.5
+Text: wie grün sind dei- ne Blät- ter!
+Töne: G:0.5 G:0.5 E:0.5 A:1.5 G:0.5 G:0.5 F:0.5 F:1.5
+Text: Du grünst nicht nur zur Som- mer- zeit,
+Töne: F:0.5 F:0.5 D:0.5 G:1.5 F:0.5 F:0.5 E:0.5 E:1.5
+Text: nein, auch im Win- ter, wenn es schneit.
+Töne: G*:0.5 C:0.75 C:0.25 C:1.5 D:0.5 E:0.75 E:0.25 E:1.5
+Text: Oh Tan- nen- baum, oh Tan- nen- baum,
+Töne: E:0.5 D:0.5 E:0.5 F H* D C
+Text: wie grün sind dei- ne Blät- ter!
+Strophe 2:
+Text: O Tan- nen- baum, o Tan- nen- baum,
+Text: du kannst mir sehr ge- fal- len!
+Text: Wie oft hat schon zur Win- ters- zeit
+Text: ein Baum von dir mich hoch er- freut!
+Text: O Tan- nen- baum, o Tan- nen- baum,
+Text: du kannst mir sehr ge- fal- len!
+Strophe 3:
+Text: O Tan- nen- baum, o Tan- nen- baum,
+Text: dein Kleid will mich was leh- ren:
+Text: Die Hoff- nung und Be- stän- dig- keit
+Text: gibt Mut und Kraft zu je- der Zeit!
+Text: O Tan- nen- baum, o Tan- nen- baum,
+Text: dein Kleid will mich was leh- ren!
+
+Lied: Still, still, still
+Info: Volkslied aus Salzburg. Aus „Kinder wollen singen“, von F nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Töne: G C' E G C
+Text: Still, – Still, – still,
+Töne: C:0.5 E:0.5 D D:0.5 F:0.5 H* H*:0.5 D:0.5 C -:0.5
+Text: weil’s – Kind- lein – schla- fen – will.
+Töne: C:0.5 D D:0.5 E:0.5 F D E E:0.5 F:0.5 G E
+Text: Ma- ri- a – tut es nie- der- – sing- en,
+Töne: D D:0.5 E:0.5 F D E E:0.5 F:0.5 G E
+Text: ih- re – keu- sche Brust dar- – brin- gen.
+Töne: G C' E G C
+Text: Still, – still, – still,
+Töne: C:0.5 E:0.5 D D:0.5 F:0.5 H* H*:0.5 D:0.5 C -
+Text: weil’s – Kind- lein – schla- fen – will.
+Strophe 2:
+Text: Still, still, still
+Text: weil’s Kind- lein schla- fen will.
+Text: Die Eng- lein tun schön ju- bi- lie- ren,
+Text: bei dem Kripp- lein mu- si- zie- ren.
+Text: Still, still, still
+Text: weil’s Kind- lein schla- fen will.
+Strophe 3:
+Text: Groß, groß, groß,
+Text: die Lieb’ ist ü- ber- groß.
+Text: Gott hat den Him- mels- thron ver- las- sen
+Text: und muss rei- sen auf den Stra- ßen.
+Text: Groß, groß, groß,
+Text: die Lieb’ ist ü- ber- groß.
+Strophe 4:
+Text: Wir, wir, wir,
+Text: wir ru- fen all zu Dir.
+Text: Tu uns des Him- mels Reich auf- schlie- ßen,
+Text: wenn wir ein- mal ster- ben müs- sen.
+Text: Wir, wir, wir,
+Text: wir ru- fen all zu Dir.
+
+Lied: Zu Bethlehem geboren
+Info: Text von Friedrich Spee (1637), Volksweise. Aus „Kinder wollen singen“, von F nach C verschoben.
+Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Töne: G* C:1.5 D:0.5 E D C:2 H* C D C:0.5 D:0.5 E D C:2 -
+Text: Zu Beth- le- hem ge- bo- ren ist uns ein – Kin- de- lein,
+Töne: G G E F G A:2 F
+Text: das hab’ ich aus- er- ko- ren,
+Töne: F E F G F:0.5 E:0.5 D:3 -
+Text: sein eigen – – will ich sein,
+Töne: G:2 D:2 E:2 D E:0.5 F:0.5 G C:0.5 D:0.5 E D C:3
+Text: ei- a, ei- a sein – eigen – – will ich sein.
+Strophe 2:
+Ganz: In seine Lieb versenken will ich mich ganz hinab;
+Ganz: mein Herz will ich ihm schenken und alles, was ich hab.
+Ganz: Eia, eia, und alles, was ich hab.
+Strophe 3:
+Ganz: O Kindelein, von Herzen dich will ich lieben sehr
+Ganz: in Freuden und in Schmerzen, je länger mehr und mehr.
+Ganz: Eia, eia, je länger mehr und mehr.
+Strophe 4:
+Ganz: Dich wahren Gott ich finde in meinem Fleisch und Blut;
+Ganz: darum ich fest mich binde an dich, mein höchstes Gut.
+Ganz: Eia, eia, an dich, mein höchstes Gut.
+Strophe 5:
+Ganz: Dazu dein Gnad mir gebe, bitt ich aus Herzensgrund,
+Ganz: dass dir allein ich lebe jetzt und zu aller Stund.
+Ganz: Eia, eia, jetzt und zu aller Stund.
+Strophe 6:
+Ganz: Lass mich von dir nicht scheiden, knüpf zu, knüpf zu das Band
+Ganz: der Liebe zwischen beiden, nimm hin mein Herz zum Pfand.
+Ganz: Eia, eia, nimm hin mein Herz zum Pfand.
+
+Lied: Jingle Bells
+Info: Englisch, nur der Refrain. Lied von James Lord Pierpont (1857).
+Töne: E E E:2 E E E:2
+Text: Jin- gle bells, jin- gle bells,
+Töne: E G C:1.5 D:0.5 E:4
+Text: jin- gle all the way!
+Töne: F F F:1.5 F:0.5 F E E E:0.5 E:0.5
+Text: Oh, what fun it is to ride in a
+Töne: E D D E D:2 G:2
+Text: one- horse o- pen sleigh, hey!
+Töne: E E E:2 E E E:2
+Text: Jin- gle bells, jin- gle bells,
+Töne: E G C:1.5 D:0.5 E:4
+Text: jin- gle all the way!
+Töne: F F F:1.5 F:0.5 F E E E:0.5 E:0.5
+Text: Oh, what fun it is to ride in a
+Töne: G G F D C:4
+Text: one- horse o- pen sleigh!
+
+
+Kategorie: Geburtstag
+
+Lied: Zum Geburtstag viel Glück
+Info: Melodie von Mildred und Patty Hill (1893). Notensatz aus dem Liederbuch LiberCantorum, von G nach C verschoben. Bei „(Na-me)“ den Namen singen. Viele Töne sind zu tief für das Xylophon und darum nach oben verschoben.
+Töne: G*:0.75 G*:0.25 A* G* C H*:2
+Text: Zum Ge- burts- tag viel Glück,
+Töne: G*:0.75 G*:0.25 A* G* D C:2
+Text: zum Ge- burts- tag viel Glück,
+Töne: G*:0.75 G*:0.25 G E C:0.75 C:0.25 H* A*
+Text: zum Ge- burts- tag lie- be (Na- me),
+Töne: F:0.75 F:0.25 E C D C:2
+Text: zum Ge- burts- tag viel Glück!
+
+
+Kategorie: Ostern
+
+Lied: Erstanden ist der heilig Christ
+Info: Osterlied aus dem 14. Jahrhundert. Melodie aus der Essen-Sammlung (Erk), von F nach C verschoben.
+Quelle: Strophen: eine Auswahl aus ChoralWiki (CPDL). Dort sind die Strophen 1, 2, 3, 4, 6, 7, 9 und 18 abgedruckt. Hier sind sie der Reihe nach von 1 bis 8 gezählt.
+Töne: C' C':2 C' H:2 H C' A:2 G:2
+Text: Er- stan- den ist der hei- lig Christ,
+Töne: G A:2 C' H:2 A G:2 F E:2
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Töne: E E:2 E G:2 G E:2 D C:2
+Text: der al- ler Welt ein Trös- ter ist.
+Töne: F E:2 A G:2 D E D:2 C:2
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Strophe 2:
+Text: Und wä- re er nicht er- stan- den,
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Text: So wä- re die Welt ver- gan- gen.
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Strophe 3:
+Text: Und seit dass er er- stan- den ist,
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Text: Lobn wir den Her- ren Je- sum Christ.
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Strophe 4:
+Text: Es gingn drei hei- li- ge Frau- en,
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Text: Des Mor- gens frü- he im Tau- en.
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Strophe 5:
+Text: Sie fun- den da zween En- gel schon,
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Text: Die tröstn die Frau- en lo- be- san.
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Strophe 6:
+Text: Er- schre- cket nicht, und seid all froh,
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Text: Denn, den ihr sucht, der ist nicht da.
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Strophe 7:
+Text: Er ist er- stan- den aus dem Grab,
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Text: Heut an dem fröh- lich’n Os- ter- tag.
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Strophe 8:
+Text: Nun sin- get all zu die- ser Frist:
+Text: Al- le- lu- ja! Al- le- lu- ja!
+Text: Er- stan- den ist der hei- lig Christ.
+Text: Al- le- lu- ja! Al- le- lu- ja!
+</script>
+<script>
+(function(){
+  var NAMES=["C","D","E","F","G","A","H","C'"];
+  var FREQ=[523.25,587.33,659.25,698.46,783.99,880.00,987.77,1046.50];
+  var DEFAULTS=["#E53935","#FB8C00","#FDD835","#43A047","#1E3A9E","#29B6F6","#8E24AA","#F06292"];
+  var KEY="xylo-colors-v2";
+  var colors=DEFAULTS.slice();
+  try{var s=localStorage.getItem(KEY);if(s){var p=JSON.parse(s);if(Array.isArray(p)&&p.length===8)colors=p;}}catch(e){}
+  var N={C:1,D:2,E:3,F:4,G:5,A:6,H:7,c:8,"-":0};
+  function L(str){return str.trim().split(/ +/).map(function(t){var a=t.split("|");var mv=a[0].indexOf("*")>=0;var k=a[0].replace("*","");if(!(k in N))throw new Error("bad note "+t);return [N[k],parseFloat(a[1]),a[2]||"",mv];});}
+  var COLORS_ALIAS={c:1,d:2,e:3,f:4,g:5,a:6,h:7,"c'":8,"c’":8,rot:1,orange:2,gelb:3,"grün":4,gruen:4,dunkelblau:5,blau:5,hellblau:6,violett:7,lila:7,pink:8,rosa:8};
+  var ERRORS=[];
+  function parseNotes(str,ln){
+    var out=[];str.trim().split(/\s+/).forEach(function(t){if(!t)return;
+      var m=/^([^:*]+)(\*?)(?::([\d.]+))?$/.exec(t);
+      if(!m){ERRORS.push("Zeile "+ln+": unbekannter Ton „"+t+"“");return;}
+      var d=m[3]?parseFloat(m[3]):1,k=m[1].toLowerCase(),n;
+      if(k==="-")n=0;else if(/^[1-8]$/.test(k))n=parseInt(k,10);else if(k in COLORS_ALIAS)n=COLORS_ALIAS[k];
+      else{ERRORS.push("Zeile "+ln+": unbekannter Ton „"+t+"“");return;}
+      if(!(d>0)){ERRORS.push("Zeile "+ln+": falsche Dauer „"+t+"“");d=1;}
+      out.push([n,d,"",m[2]==="*"]);});
+    return out;}
+  function words(str){return str.trim()?str.trim().split(/\s+/):[];}
+  function parseLieder(txt){
+    var songs=[],cat="Lieder",song=null,verse=null,pending=null;
+    txt.replace(/\r/g,"").split("\n").forEach(function(raw,i){
+      var ln=i+1,l=raw.trim();if(!l||l.charAt(0)==="#")return;
+      var m=/^([A-Za-zÄÖÜäöü]+(?: \d+)?):\s?(.*)$/.exec(l);
+      var key=m?m[1]:(l==="="?"=":null),val=m?m[2]:"";
+      if(key==="Kategorie"){cat=val.trim();return;}
+      if(key==="Lied"){song={cat:cat,title:val.trim(),meta:"",vsrc:"",lines:[],verses:[]};songs.push(song);verse=null;pending=null;return;}
+      if(!song){ERRORS.push("Zeile "+ln+": erst „Lied:“ schreiben");return;}
+      var sm=/^Strophe (\d+)$/.exec(key||"");
+      if(sm){verse={n:parseInt(sm[1],10),rows:[],block:null};song.verses.push(verse);return;}
+      if(key==="Info"){song.meta=val.trim();return;}
+      if(key==="Quelle"){song.vsrc=val.trim();return;}
+      if(!verse){
+        if(key==="Töne"){pending=parseNotes(val,ln);song.lines.push(pending);return;}
+        if(key==="Text"){if(!pending){ERRORS.push("Zeile "+ln+": „Text:“ ohne „Töne:“ davor");return;}
+          var w=words(val),notes=pending.filter(function(n){return n[0]>0;});
+          if(w.length!==notes.length)ERRORS.push("Zeile "+ln+" („"+song.title+"“): "+w.length+" Silben, aber "+notes.length+" Töne");
+          notes.forEach(function(n,k){var x=w[k]||"";n[2]=x==="_"?"":x;});pending=null;return;}
+      }else{
+        if(key==="=" ){verse.rows.push({type:"same"});return;}
+        if(key==="Text"){verse.rows.push({type:"text",syl:words(val).map(function(x){return x==="_"?"":x;})});return;}
+        if(key==="Zeile"){verse.rows.push({type:"line",text:val.trim()});return;}
+        if(key==="Ganz"){(verse.block=verse.block||[]).push(val.trim());return;}
+      }
+      ERRORS.push("Zeile "+ln+": nicht verstanden: „"+l.slice(0,40)+"“");
+    });
+    return songs;}
+  function joinSyl(a){var s="";a.forEach(function(x){if(s&&!/-$/.test(s))s+=" ";s=s.replace(/-$/,"")+x;});return s;}
+
+  function lum(hex){var h=hex.replace("#","");var r=parseInt(h.substr(0,2),16)/255,g=parseInt(h.substr(2,2),16)/255,b=parseInt(h.substr(4,2),16)/255;
+    function c(x){return x<=0.03928?x/12.92:Math.pow((x+0.055)/1.055,2.4);}return 0.2126*c(r)+0.7152*c(g)+0.0722*c(b);}
+  function textOn(hex){return lum(hex)>0.35?"#1E2A44":"#FFFFFF";}
+  function applyColors(){var root=document.documentElement;
+    for(var i=0;i<8;i++){root.style.setProperty("--n"+(i+1),colors[i]);root.style.setProperty("--t"+(i+1),textOn(colors[i]));}}
+
+  // Klang beim Antippen
+  var ctx=null;
+  function ac(){if(!ctx){var A=window.AudioContext||window.webkitAudioContext;if(A)ctx=new A();}if(ctx&&ctx.state==="suspended")ctx.resume();return ctx;}
+  function ring(n){var c=ac();if(!c||!n)return;var t=c.currentTime;var f=FREQ[n-1];
+    [[1,0.5],[2.76,0.12],[5.4,0.05]].forEach(function(p){
+      var o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f*p[0];
+      g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(p[1],t+0.005);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+1.0);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+1.1);});}
+
+  var xylo=document.getElementById("xylo");
+  for(var i=0;i<8;i++){(function(i){
+    var b=document.createElement("button");b.className="bar";
+    b.style.background="var(--n"+(i+1)+")";b.style.color="var(--t"+(i+1)+")";b.style.height=(150-i*11)+"px";
+    b.setAttribute("aria-label","Ton "+NAMES[i]);
+    b.innerHTML='<span class="pin"></span><span class="nm">'+NAMES[i]+'</span><span class="pin"></span>';
+    b.addEventListener("click",function(){ring(i+1);b.classList.add("hit");setTimeout(function(){b.classList.remove("hit");},120);});
+    xylo.appendChild(b);})(i);}
+
+  var editor=document.getElementById("editor"),editBtn=document.getElementById("editBtn"),sw=document.getElementById("swatches");
+  function buildSwatches(){sw.innerHTML="";for(var i=0;i<8;i++){(function(i){
+    var l=document.createElement("label");var inp=document.createElement("input");inp.type="color";inp.value=colors[i];
+    inp.setAttribute("aria-label","Farbe von Ton "+NAMES[i]);
+    inp.addEventListener("input",function(){colors[i]=inp.value;applyColors();try{localStorage.setItem(KEY,JSON.stringify(colors));}catch(e){}});
+    l.appendChild(inp);l.appendChild(document.createTextNode(" "+NAMES[i]));sw.appendChild(l);})(i);}}
+  editBtn.addEventListener("click",function(){var o=editor.classList.toggle("open");editBtn.setAttribute("aria-expanded",o);});
+  document.getElementById("resetBtn").addEventListener("click",function(){colors=DEFAULTS.slice();applyColors();buildSwatches();try{localStorage.removeItem(KEY);}catch(e){}});
+
+  function sylls(t){var o=[];t.trim().split(/ +/).forEach(function(w){var p=w.split("|");p.forEach(function(x,i){if(i<p.length-1&&!/-$/.test(x))x+="-";o.push(x);});});return o;}
+  function usesText(song){var u=[];song.lines.forEach(function(l){l.forEach(function(n){if(n[0]&&u.indexOf(n[0])<0)u.push(n[0]);});});u.sort(function(a,b){return a-b;});
+    if(u.length===8)return "Braucht alle 8 Töne.";
+    var run=u.every(function(x,i){return i===0||x===u[i-1]+1;});
+    if(run)return "Braucht die Töne "+NAMES[u[0]-1]+" bis "+NAMES[u[u.length-1]-1]+".";
+    return "Braucht die Töne "+u.slice(0,-1).map(function(x){return NAMES[x-1];}).join(", ")+" und "+NAMES[u[u.length-1]-1]+".";}
+
+  var catsEl=document.getElementById("cats");
+  function render(txt){
+  ERRORS=[];catsEl.innerHTML="";
+  var SONGS=parseLieder(txt);
+  if(ERRORS.length){var eb=document.createElement("div");eb.className="errbox";
+    eb.innerHTML="<b>Hinweis zur Liederdatei:</b>";var ul=document.createElement("ul");
+    ERRORS.slice(0,30).forEach(function(e){var li=document.createElement("li");li.textContent=e;ul.appendChild(li);});eb.appendChild(ul);catsEl.appendChild(eb);}
+  var CATS=[];SONGS.forEach(function(x){if(CATS.indexOf(x.cat)<0)CATS.push(x.cat);});
+  CATS.forEach(function(cat){
+    var list=SONGS.filter(function(s){return s.cat===cat;});if(!list.length)return;
+    var cs=document.createElement("section");cs.className="cat";
+    var h=document.createElement("h2");h.textContent=cat;cs.appendChild(h);
+    var grid=document.createElement("div");grid.className="songs";cs.appendChild(grid);catsEl.appendChild(cs);
+    list.forEach(function(song){grid.appendChild(makeSong(song));});
+  });
+  }
+
+  function makeSong(song){
+    var sec=document.createElement("section");sec.className="song";
+    var tile=document.createElement("button");tile.className="tile";tile.setAttribute("aria-expanded","false");
+    var pips=document.createElement("span");pips.className="pips";pips.setAttribute("aria-hidden","true");
+    var seen=[];song.lines.forEach(function(l){l.forEach(function(n){if(n[0]&&seen.indexOf(n[0])<0&&seen.length<3)seen.push(n[0]);});});
+    seen.forEach(function(n){var i=document.createElement("i");i.style.background="var(--n"+n+")";pips.appendChild(i);});
+    var t=document.createElement("span");t.className="t";t.textContent=song.title;
+    var ch=document.createElement("span");ch.className="chev";ch.setAttribute("aria-hidden","true");ch.textContent="▾";
+    tile.appendChild(pips);tile.appendChild(t);tile.appendChild(ch);sec.appendChild(tile);
+    var body=document.createElement("div");body.className="body";sec.appendChild(body);
+    var vs=song.verses||[];
+    var vsel=null,btns=[];
+    if(vs.length){vsel=document.createElement("div");vsel.className="vsel";vsel.setAttribute("role","group");vsel.setAttribute("aria-label","Strophe wählen");
+      var lab=document.createElement("span");lab.textContent="Strophe:";vsel.appendChild(lab);
+      [1].concat(vs.map(function(v){return v.n;})).forEach(function(n){var b=document.createElement("button");b.textContent=n;
+        b.setAttribute("aria-pressed",n===1?"true":"false");b.setAttribute("aria-label","Strophe "+n);
+        b.addEventListener("click",function(){setVerse(n);});vsel.appendChild(b);btns.push(b);});
+      body.appendChild(vsel);}
+    var m=document.createElement("p");m.className="meta";m.textContent=song.meta;body.appendChild(m);
+    var us=document.createElement("p");us.className="uses";us.textContent=usesText(song);body.appendChild(us);
+    if(song.vsrc){var sr=document.createElement("p");sr.className="vsrc";sr.textContent=song.vsrc;body.appendChild(sr);}
+    var hasMoved=song.lines.some(function(l){return l.some(function(n){return n[3];});});
+    if(hasMoved){var mn=document.createElement("div");mn.className="movednote";
+      mn.innerHTML='<span class="dot moved" aria-hidden="true">G</span><span><b>Gestrichelter Ring:</b> Der echte Ton ist tiefer als das tiefe C. Dein Xylophon hat ihn nicht. Spiele den Ton im Punkt. Es ist derselbe Ton, eine Oktave höher.</span>';
+      body.appendChild(mn);}
+    var block=document.createElement("div");block.className="vblock";block.hidden=true;body.appendChild(block);
+    var rows=[];
+    song.lines.forEach(function(line,li){
+      var ph=document.createElement("div");ph.className="phrase";
+      var cells=[];
+      line.forEach(function(nt){
+        var n=nt[0],d=nt[1],syl=nt[2],mv=nt[3];
+        if(n===0){var r=document.createElement("div");r.className="rest";r.setAttribute("aria-label","Pause");ph.appendChild(r);return;}
+        var c=document.createElement("div");c.className="cell";
+        var dot=document.createElement("div");dot.className="dot"+(mv?" moved":"");
+        dot.style.background="var(--n"+n+")";dot.style.color="var(--t"+n+")";
+        dot.style.width=(d>=4?78:d>=2?54:d>=1.5?46:36)+"px";
+        dot.textContent=NAMES[n-1];dot.setAttribute("aria-label","Ton "+NAMES[n-1]+(mv?", nach oben verschoben":""));
+        var sy=document.createElement("div");sy.className="syl";sy.textContent=syl||"\u00a0";
+        c.appendChild(dot);c.appendChild(sy);ph.appendChild(c);
+        cells.push({el:sy,orig:syl,slot:!!syl&&syl!=="–"});
+      });
+      var tx=document.createElement("div");tx.className="vtext";tx.hidden=true;
+      body.appendChild(ph);body.appendChild(tx);rows.push({cells:cells,tx:tx});
+    });
+    function setVerse(n){
+      btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.textContent==String(n)));});
+      var v=null;vs.forEach(function(x){if(x.n===n)v=x;});
+      block.hidden=true;block.innerHTML="";
+      if(v&&v.block){block.hidden=false;var hp=document.createElement("p");hp.className="hint";hp.textContent="Text von Strophe "+n+":";block.appendChild(hp);
+        v.block.forEach(function(l){var p=document.createElement("p");p.textContent=l;block.appendChild(p);});}
+      rows.forEach(function(r,li){
+        var e=v&&!v.block?v.rows[li]:null;r.tx.hidden=true;r.tx.textContent="";
+        function orig(){r.cells.forEach(function(c){c.el.textContent=c.orig||"\u00a0";});}
+        function blank(){r.cells.forEach(function(c){c.el.textContent=c.slot?"\u00a0":(c.orig||"\u00a0");});}
+        if(v&&v.block){blank();return;}
+        if(!e||e.type==="same"){orig();return;}
+        var nslot=r.cells.filter(function(c){return c.slot;}).length;
+        if(e.type==="text"&&e.syl.length===nslot){var k=0;r.cells.forEach(function(c){c.el.textContent=c.slot?(e.syl[k++]||"\u00a0"):(c.orig||"\u00a0");});return;}
+        blank();r.tx.hidden=false;r.tx.textContent=e.type==="line"?e.text:joinSyl(e.syl);
+      });
+    }
+    tile.addEventListener("click",function(){
+      var open=!sec.classList.contains("open");
+      sec.classList.toggle("open",open);tile.setAttribute("aria-expanded",open);
+      if(open){setTimeout(function(){try{sec.scrollIntoView({behavior:"smooth",block:"start"});}catch(e){sec.scrollIntoView();}},30);}
+    });
+    return sec;
+  }
+  applyColors();buildSwatches();
+  var builtin=document.getElementById("lieder-eingebaut").textContent;
+  try{fetch("lieder.txt",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.text();})
+    .then(function(t){if(t.indexOf("Lied:")<0)throw 0;render(t);}).catch(function(){render(builtin);});}
+  catch(e){render(builtin);}
+})();
+</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
+</body>
+</html>

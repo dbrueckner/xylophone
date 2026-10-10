@@ -6,7 +6,6 @@
 # Kategorie: Name      neue Kategorie (gilt für alle folgenden Lieder)
 # Lied: Titel          neues Lied
 # Info: Text           kurzer Text unter dem Titel
-# Quelle: Text         Hinweis zu den Strophen (optional)
 #
 # Töne: ...            eine Notenzeile. Jeder Ton ist ein Notenname oder eine Balkennummer:
 #   C D E F G A H C'   (C = tiefes C = Balken 1 ... C' = hohes C = Balken 8)
@@ -24,9 +23,8 @@
 # Strophe 2:           ab hier kommt der Text der 2. Strophe
 #   Text: ...          Silben für die nächste Notenzeile (gehaltene Töne – zählen nicht mit)
 #   =                  diese Notenzeile hat denselben Text wie Strophe 1
-#   Zeile: ...         ganzer Text für diese Notenzeile, ohne Silben-Zuordnung
-#   Ganz: ...          ganze Strophe als freier Text (eine Zeile pro Ganz:)
-#   Passt die Silbenzahl einer Text:-Zeile nicht, zeigt die App sie als ganze Zeile.
+#   Jede Text:-Zeile braucht genau so viele Silben wie die Notenzeile in Strophe 1
+#   (ohne Pausen und ohne gehaltene Töne –). Sonst meldet die App einen Fehler.
 #
 # Beispiel:
 #   Lied: Mein Lied
@@ -43,7 +41,6 @@ Kategorie: Klassische Kinderlieder
 
 Lied: Alle meine Entchen
 Info: Volkslied.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
 Töne: C D E F G:2 G:2
 Text: Al- le mei- ne Ent- chen
 Töne: A A A A G:4
@@ -93,8 +90,7 @@ Töne: C E G G C:4
 Text: eilt nach Haus ge- schwind.
 
 Lied: Es tanzt ein Bi-Ba-Butzemann (Version 1)
-Info: Volkslied, Fassung aus Thüringen und Hessen (Essen-Sammlung). „di-del“ auf einem Punkt singen.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Der Refrain ist in allen Strophen gleich.
+Info: Volkslied, Fassung aus Thüringen und Hessen. „di-del“ auf einem Punkt singen.
 Töne: G*:0.5 C E G C' A:0.75 A:0.25 A:0.5
 Text: Es tanzt ein Bi- Ba- But- ze- mann
 Töne: A:0.5 G:0.5 F:0.5 E:0.5 D:0.5 C:0.5 E:0.5 G:0.5
@@ -134,7 +130,7 @@ Text: Er wirft sein Säck- lein hin und her,
 Text: Am Mor- gen ist es wie- der leer.
 
 Lied: Es tanzt ein Bi-Ba-Butzemann (Version 2)
-Info: Ihre Fassung mit F (Balken 4) als Grundton. Sie stimmt mit dem Liederbuch „Kinder wollen singen“ überein. Nur der Refrain.
+Info: Fassung mit F als Grundton. Nur der Refrain.
 Töne: C F F C' C' A A F F
 Text: Es tanzt ein Bi- Ba- But- ze- mann in
 Töne: G G C C F F:0.5 A:0.5 C'
@@ -146,7 +142,6 @@ Text: un- serm Haus he- rum.
 
 Lied: Kuckuck, Kuckuck, ruft’s aus dem Wald
 Info: Melodie aus Österreich, Text von Hoffmann von Fallersleben (1835).
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
 Töne: G E - G E - F E D C:2 -
 Text: Ku- ckuck, Ku- ckuck, ruft’s aus dem Wald.
 Töne: D D E F:2 D
@@ -198,7 +193,6 @@ Text: Schieb, schieb in’n O- fen ’nein!
 
 Lied: Fuchs, du hast die Gans gestohlen
 Info: Volkslied.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
 Töne: C:0.5 D:0.5 E:0.5 F:0.5 G:0.5 G:0.5 G:0.5 G:0.5
 Text: Fuchs, du hast die Gans ge- stoh- len,
 Töne: A:0.5 F:0.5 C':0.5 A:0.5 G -
@@ -232,7 +226,6 @@ Text: mit der Maus vor- lieb!
 
 Lied: Bruder Jakob
 Info: Volkslied (französisch „Frère Jacques“).
-Quelle: Strophen 2–4 auf Französisch, Englisch und Spanisch, aus „Kinder wollen singen“. Auf Spanisch „me‿us“ auf einem Ton singen.
 Töne: C D E C C D E C
 Text: Bru- der Ja- kob, Bru- der Ja- kob,
 Töne: E F G:2 E F G:2
@@ -263,8 +256,7 @@ Text: sue- nan las cam- pa- nas?
 Text: Din din don, din din don!
 
 Lied: Hopp, hopp, hopp, Pferdchen, lauf Galopp
-Info: Text von Carl Hahn (1807), Melodie aus der Essen-Sammlung.
-Quelle: Strophen 2–4: Text von Carl Hahn, nach Mama Lisa’s World.
+Info: Text von Carl Hahn (1807).
 Töne: C E G -
 Text: Hopp, hopp, hopp,
 Töne: G:0.5 F:0.5 E:0.5 D:0.5 C -
@@ -300,7 +292,7 @@ Text: Ha, ha, ha, ha, ha!
 Text: Hei, nun sind wir da!
 
 Lied: Machet auf das Tor
-Info: Singspiel (Essen-Sammlung). Kurze Fassung aus der Quelle.
+Info: Singspiel, kurze Fassung.
 Töne: C:0.5 E:0.5 G G E
 Text: Ma- chet auf das Tor,
 Töne: C:0.5 E:0.5 G G E
@@ -309,7 +301,7 @@ Töne: C' H A G F E:2 C
 Text: es kommt ein gold- ner Wa- gen.
 
 Lied: O du lieber Augustin
-Info: Wiener Volkslied, nur der Refrain (Essen-Sammlung). Walzer: 1-2-3 zählen.
+Info: Wiener Volkslied, nur der Refrain. Walzer: 1-2-3 zählen.
 Töne: G:1.5 A:0.5 G:0.5 F:0.5 E C C
 Text: O du lie- ber Au- gu- stin,
 Töne: D G* G* E C C
@@ -320,8 +312,7 @@ Töne: D G* G* C -:2
 Text: al- les ist hin.
 
 Lied: Die Vogelhochzeit
-Info: Volkslied. Melodie aus „Kinder wollen singen“, von G nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Die Strophen haben verschieden viele Silben. Darum steht ihr Text als ganze Zeile unter den Noten.
+Info: Volkslied.
 Töne: E:0.5 G:0.5 E:0.5 G:0.5 E:0.5 F:0.5 D:0.5 F:0.5 D:0.5
 Text: Ein Vo- gel woll- te Hoch- zeit ma- chen
 Töne: E:0.5 C:0.5 G:0.5 E:0.5 D:0.5 G:0.5 G:0.5
@@ -332,94 +323,9 @@ Töne: G:0.25 E:0.25 D:0.5 D:0.5 D:0.5
 Text: fi- de- ral- la- la,
 Töne: G:0.25 F:0.25 E:0.5 C:0.5 D:0.5 H*:0.5 C:1.5
 Text: fi- de- ral- la- la- la- la!
-Strophe 2:
-Zeile: Der Stiglitz war der Bräutigam,
-Zeile: er singt zu Gottes Gloriam.
-Strophe 3:
-Zeile: Die Amsel war die Braute,
-Zeile: trug einen Kranz von Raute.
-Strophe 4:
-Zeile: Der Sperber, der Sperber,
-Zeile: der war der Hochzeitswerber.
-Strophe 5:
-Zeile: Der Stare, der Stare,
-Zeile: der flocht’ der Braut die Haare.
-Strophe 6:
-Zeile: Der Uhu, der Uhu,
-Zeile: der bringt der Braut die Hochzeitsschuh’.
-Strophe 7:
-Zeile: Der Sperling, der Sperling,
-Zeile: der bringt der Braut den Fingerring.
-Strophe 8:
-Zeile: Die Taube, die Taube,
-Zeile: die bringt der Braut die Haube.
-Strophe 9:
-Zeile: Die Lerche, die Lerche,
-Zeile: die führt die Braut zur Kerche.
-Strophe 10:
-Zeile: Brautmutter war die Eule,
-Zeile: nahm Abschied mit Geheule.
-Strophe 11:
-Zeile: Der Auerhahn, der Auerhahn,
-Zeile: der war der stolze Herr Kaplan.
-Strophe 12:
-Zeile: Die Meise, die Meise,
-Zeile: die singt das Kyrie leise.
-Strophe 13:
-Zeile: Der Wiedehopf, der Wiedehopf,
-Zeile: der brachte gleich den Suppentopf.
-Strophe 14:
-Zeile: Die Schnepfe, die Schnepfe
-Zeile: setzt’ auf den Tisch die Näpfe.
-Strophe 15:
-Zeile: Die Finken, die Finken,
-Zeile: die gaben der Braut zu trinken.
-Strophe 16:
-Zeile: Der Storch mit seinem langen Schnabel,
-Zeile: bracht’ das Messer und die Gabel.
-Strophe 17:
-Zeile: Die Puten, die Puten,
-Zeile: die machten breite Schnuten.
-Strophe 18:
-Zeile: Die Gänse und die Anten,
-Zeile: die war’n die Musikanten.
-Strophe 19:
-Zeile: Der Pfau mit seinem bunten Schwanz
-Zeile: tat mit der Braut den ersten Tanz.
-Strophe 20:
-Zeile: Frau Nachtigall, Frau Nachtigall,
-Zeile: die sang mit ihrem schönsten Schall.
-Strophe 21:
-Zeile: Der Geier, der Geier,
-Zeile: der spielte auf der Leier.
-Strophe 22:
-Zeile: Der Papagei, der Papagei,
-Zeile: der machte drob ein groß’ Geschrei.
-Strophe 23:
-Zeile: Der lange Specht,
-Zeile: der lange Specht, der macht’ der Braut das Bett zurecht.
-Strophe 24:
-Zeile: Das Drosselein, das Drosselein,
-Zeile: das führt die Braut ins Kämmerlein.
-Strophe 25:
-Zeile: Der Hahn,
-Zeile: der krähet: „Gute Nacht“, nun wird die Kammer zugemacht.
-Strophe 26:
-Zeile: Der Uhu, der Uhu,
-Zeile: der schlug die Fensterläden zu.
-Strophe 27:
-Zeile: Die Fledermaus, die Fledermaus,
-Zeile: die zog der Braut die Strümpfe aus.
-Strophe 28:
-Zeile: Die Vogelhochzeit ist nun aus,
-Zeile: die Vögel fliegen all’ nach Haus.
-Strophe 29:
-Zeile: Das Käuzchen bläst die Lichter aus
-Zeile: und alle zieh’n vergnügt nach Haus.
 
 Lied: Alle Vögel sind schon da
-Info: Text von Hoffmann von Fallersleben. Melodie aus „Kinder wollen singen“, von D nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Hoffmann von Fallersleben.
 Töne: C:1.5 E:0.5 G C' A C':0.5 A:0.5 G:2
 Text: Al- le Vö- gel sind schon – da,
 Töne: F:1.5 G:0.5 E C D:2 C:2
@@ -448,8 +354,7 @@ Text: hier und dort, feld- aus, feld- ein,
 Text: sin- gen, sprin- gen, scher- zen.
 
 Lied: Summ, summ, summ
-Info: Text von Hoffmann von Fallersleben. Melodie aus „Kinder wollen singen“, von F nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Hoffmann von Fallersleben.
 Töne: G F E:2
 Text: Summ, summ, summ,
 Töne: D:0.5 E:0.5 F:0.5 D:0.5 C:2
@@ -541,7 +446,6 @@ Kategorie: Schlaflieder
 
 Lied: Schlaf, Kindlein, schlaf
 Info: Volkslied.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
 Töne: E D:0.5 D:0.5 C -:0.5
 Text: Schlaf, Kind- lein, schlaf,
 Töne: G*:0.5 E:0.5 E:0.5 D:0.5 D:0.5 C -:0.5
@@ -580,7 +484,6 @@ Text: Und weck mir nicht mein Kin- de- lein,
 
 Lied: Der Mond ist aufgegangen
 Info: Melodie von J. A. P. Schulz (1790), Text von Matthias Claudius.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
 Töne: C D C F E D:2 C
 Text: Der Mond ist auf- ge- gan- gen,
 Töne: E E E A G F:2 E
@@ -637,8 +540,7 @@ Text: Und lass uns ru- hig schla- fen,
 Text: Und un- ser’n kran- ken Nach- barn auch.
 
 Lied: Wer hat die schönsten Schäfchen?
-Info: Text von Hoffmann von Fallersleben. Melodie aus dem Liederbuch LiberCantorum, von F nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Hoffmann von Fallersleben.
 Töne: C G G F F E:2 D
 Text: Wer hat die schön- sten Schäf- chen?
 Töne: G G C F E D:2 -
@@ -669,8 +571,7 @@ Text: musst freund- lich wie die Schäf- chen
 Text: und wie die Schä- fer sein.
 
 Lied: Weißt du, wie viel Sternlein stehen
-Info: Text von Wilhelm Hey (1837), Volksweise. Melodie aus „Kinder wollen singen“, von D nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Wilhelm Hey (1837), Volksweise.
 Töne: C:0.5 D:0.5 E E F:0.5 D:0.5 A:0.5 G:0.5 G
 Text: Weißt du, wie viel’ Stern- lein ste- – hen,
 Töne: E:0.5 G:0.5 G:0.5 F:0.5 F G:0.5 F:0.5 E:2
@@ -707,8 +608,7 @@ Text: kennt auch dich und hat dich lieb,
 Text: kennt auch dich und hat dich lieb.
 
 Lied: Müde bin ich, geh zur Ruh
-Info: Text von Luise Hensel (1817). Melodie aus der Essen-Sammlung (Böhme), von G nach C verschoben.
-Quelle: Text nach hymnary.org. In Strophe 4 habe ich zwei Tippfehler der Quelle verbessert („schließe“, „Welt“).
+Info: Text von Luise Hensel (1817).
 Töne: C:1.5 C:0.5 C:0.5 C:0.5 H*:0.5 C:0.5 D:2 -:2
 Text: Mü- de bin ich, geh zur Ruh,
 Töne: D:1.5 D:0.5 D:0.5 D:0.5 C:0.5 D:0.5 E:2 -:2
@@ -735,7 +635,6 @@ Text: Und die stil- le Welt be- sehn.
 
 Lied: Twinkle, Twinkle, Little Star
 Info: Englisch, Text von Jane Taylor (1806).
-Quelle: Strophen 2–5: Gedicht „The Star“ von Jane Taylor (1806). Die Zeilen 5 und 6 wie in Strophe 1 singen. Zwei Zeilen haben eine Silbe mehr. Sie stehen als ganze Zeile unter den Noten.
 Töne: C C G G A A G:2
 Text: Twin- kle, twin- kle, lit- tle star,
 Töne: F F E E D D C:2
@@ -754,16 +653,6 @@ Text: When he noth- ing shines up- on,
 Text: Then you show your lit- tle light,
 Text: Twin- kle, twin- kle, all the night.
 Strophe 3:
-Text: Then the trav’l- ler in the dark,
-Text: Thanks you for your ti- ny spark,
-Zeile: He could not see which way to go,
-Text: If you did not twin- kle so.
-Strophe 4:
-Text: In the dark blue sky you keep,
-Zeile: And often thro’ my curtains peep,
-Text: For you nev- er shut your eye,
-Text: Till the sun is in the sky.
-Strophe 5:
 Text: ’Tis your bright and ti- ny spark,
 Text: Lights the trav’l- ler in the dark:
 Text: Tho’ I know not what you are,
@@ -774,7 +663,6 @@ Kategorie: Weihnachten
 
 Lied: Morgen kommt der Weihnachtsmann
 Info: Text von Hoffmann von Fallersleben (1835), alte französische Melodie (dieselbe wie „Twinkle, Twinkle, Little Star“).
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Strophe 3, Zeile 2 nach dem Originaltext von Hoffmann von Fallersleben.
 Töne: C C G G A A G:2
 Text: Mor- gen kommt der Weih- nachts- mann,
 Töne: F F E E D D C:2
@@ -803,8 +691,7 @@ Text: Al- le, al- le sind wir da,
 Text: War- ten dein mit Schmer- zen.
 
 Lied: O du fröhliche
-Info: Text von Johannes Daniel Falk, Melodie aus Sizilien. Melodie aus dem Liederbuch LiberCantorum.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Johannes Daniel Falk, Melodie aus Sizilien.
 Töne: G:2 A:2 G:1.5 F:0.5 E F
 Text: O du fröh- li- che, –
 Töne: G:2 A:2 G:1.5 F:0.5 E F
@@ -831,8 +718,7 @@ Text: Himm- li- sche Hee- re
 Text: jauch- zen dir Eh- re:
 
 Lied: Alle Jahre wieder
-Info: Text von Wilhelm Hey, Melodie von Friedrich Silcher. Aus „Kinder wollen singen“, von D nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Wilhelm Hey, Melodie von Friedrich Silcher.
 Töne: G:1.5 A:0.5 G F E:2 D:2
 Text: Al- le Jah- re wie- der
 Töne: C D:0.5 E:0.5 F E D:3 -
@@ -858,8 +744,7 @@ Text: dass es treu mich lei- te
 Text: an der lie- ben Hand.
 
 Lied: Ihr Kinderlein kommet
-Info: Text von Christoph von Schmid (1798), Melodie von J. A. P. Schulz. Aus „Kinder wollen singen“, von D nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Christoph von Schmid (1798), Melodie von J. A. P. Schulz.
 Töne: G:0.5 G E:0.5 G:0.5 G E:0.5
 Text: Ihr Kin- der- lein kom- met,
 Töne: G:0.5 F D:0.5 F:0.5 E -:0.5
@@ -932,8 +817,7 @@ Text: und mach sie auf e- wig
 Text: mit dei- nem in eins.
 
 Lied: Lasst uns froh und munter sein
-Info: Nikolauslied, Volksweise. Aus „Kinder wollen singen“.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Info: Nikolauslied, Volksweise.
 Töne: G G G:0.5 A:0.5 G:0.5 F:0.5 E E E -
 Text: Lasst uns froh – und – mun- ter sein,
 Töne: F F F:0.5 G:0.5 F:0.5 E:0.5 D D D -
@@ -945,39 +829,32 @@ Text: bald ist Ni- ko- laus- – a- bend da,
 Töne: C' G G:0.5 A:0.5 G:0.5 F:0.5 E D C:2
 Text: bald ist Ni- ko- laus- – a- bend da.
 Strophe 2:
-Ganz: Bald ist unser Kindergarten aus, dann zieh’n wir vergnügt nach Haus.
-Ganz: Lustig, lustig, tralalalala, bald ist Nikolausabend da, bald ist Nikolausabend da.
-Strophe 3:
 Text: Dann stell ich den Tel- ler auf,
 Text: Ni- k’laus legt ge- wiss was drauf.
 Text: Lus- tig, lus- tig, tra- la- la- la- la,
 Text: bald ist Ni- ko- laus- a- bend da,
 Text: bald ist Ni- ko- laus- a- bend da.
-Strophe 4:
+Strophe 3:
 Text: Steht der Tel- ler auf dem Tisch,
 Text: sing ich noch- mals froh und frisch:
 Text: Lus- tig, lus- tig, tra- la- la- la- la,
 Text: bald ist Ni- ko- laus- a- bend da,
 Text: bald ist Ni- ko- laus- a- bend da.
-Strophe 5:
+Strophe 4:
 Text: Wenn ich schlaf, dann träu- me ich:
 Text: Jetzt bringt Ni- k’laus was für mich.
 Text: Lus- tig, lus- tig, tra- la- la- la- la,
 Text: bald ist Ni- ko- laus- a- bend da,
 Text: bald ist Ni- ko- laus- a- bend da.
-Strophe 6:
+Strophe 5:
 Text: Wenn ich auf- ge- stan- den bin,
 Text: lauf ich schnell zum Tel- ler hin.
 Text: Lus- tig, lus- tig, tra- la- la- la- la,
 Text: bald ist Ni- ko- laus- a- bend da,
 Text: bald ist Ni- ko- laus- a- bend da.
-Strophe 7:
-Ganz: Nik’laus ist ein guter Mann, dem man nicht genug danken kann.
-Ganz: Lustig, lustig, tralalalala, bald ist Nikolausabend da, bald ist Nikolausabend da.
 
 Lied: Am Weihnachtsbaume die Lichter brennen
-Info: Text von Hermann Kletke (1841), Melodie traditionell. Aus „Kinder wollen singen“.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Info: Text von Hermann Kletke (1841), Melodie traditionell.
 Töne: C:0.5 C:0.5 E:0.5 G E:0.5 G:0.5 C':0.5 A:0.5 G E:0.5
 Text: Am Weih- nachts- bau- me die Lich- ter bren- nen,
 Töne: G:0.5 A:0.5 G:0.5 F D G:0.5 G:0.5 E -:0.5
@@ -986,35 +863,9 @@ Töne: E:0.5 E:0.5 G:0.5
 Text: als spräch’ er:
 Töne: F D:0.5 F:0.5 F:0.5 A:0.5 G E:0.5 E:0.5 E:0.5 G:0.5 F D G:0.5 G:0.5 E -:0.5
 Text: „Wollt ihr in mir er- ken- nen ge- treu- er Hoff- nung stil- les Bild!“
-Strophe 2:
-Ganz: Die Kinder stehen mit hellen Blicken,
-Ganz: das Auge lacht, es lacht das Herz,
-Ganz: oh fröhlich seliges Entzücken!
-Ganz: Die Alten schauen himmelwärts.
-Strophe 3:
-Ganz: Zwei Engel sind hereingetreten,
-Ganz: kein Auge hat sie kommen seh’n,
-Ganz: sie gehn zum Weihnachtstisch und beten,
-Ganz: und wenden wieder sich und geh’n.
-Strophe 4:
-Ganz: Gesegnet seid, ihr alten Leute,
-Ganz: gesegnet sei, du kleine Schar!
-Ganz: Wir bringen Gottes Segen heute
-Ganz: dem braunen wie dem weißen Haar.
-Strophe 5:
-Ganz: Zu guten Menschen, die sich lieben,
-Ganz: schickt uns der Herr als Boten aus,
-Ganz: und seid ihr treu und fromm geblieben,
-Ganz: wir treten wieder in dies Haus.
-Strophe 6:
-Ganz: Kein Ohr hat ihren Spruch vernommen,
-Ganz: unsichtbar jedes Menschen Blick
-Ganz: sind sie gegangen wie gekommen,
-Ganz: doch Gottes Segen blieb zurück.
 
 Lied: Joseph, lieber Joseph mein
-Info: Traditionell. Aus „Kinder wollen singen“, von F nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Info: Traditionell.
 Töne: G E:0.5 C E:0.5 G A:0.5 G:1.5
 Text: Jo- seph, lie- ber Jo- seph mein,
 Töne: G E:0.5 C E:0.5 G A:0.5 G:1.5
@@ -1029,24 +880,18 @@ Text: hilf mir wieg’n mein Kin- de- lein,
 Text: Gott, der wird dein Loh- ner sein im Him- mel- reich,
 Text: der Jung- frau Sohn Ma- ri- a.
 Strophe 3:
-Ganz: Gerne, lieb’ Maria mein,
-Ganz: helf ich dir wieg’n das Kindelein.
-Ganz: dass Gott müss’ mein Lohner sein
-Ganz: im Himmelreich, der Jungfrau Sohn Maria.
-Strophe 4:
 Text: Freu dich nun, o Chris- ten- schar,
 Text: der himm- li- sche Kö- nig klar
 Text: nahm die Mensch- heit of- fen- bar, den uns ge- bar
 Text: die rei- ne Magd Ma- ri- a.
-Strophe 5:
+Strophe 4:
 Text: Sü- ßer Je- su, aus- er- kor’n,
 Text: weißt wohl, dass wir war’n ver- lor’n,
 Text: still uns dei- nes Va- ters Zorn, dich hat ge- bor’n
 Text: die rei- ne Magd Ma- ri- a.
 
 Lied: Schneeflöckchen, Weißröckchen
-Info: Text von Hedwig Haberkern, Volksweise. Aus „Kinder wollen singen“, von D nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Text von Hedwig Haberkern, Volksweise.
 Töne: E:0.5 F:0.5 G G A D D
 Text: Schnee- – flöck- chen, Weiß- röck- chen,
 Töne: D:0.5 E:0.5 F F G E:2
@@ -1072,7 +917,7 @@ Text: dann bau’n wir den Schnee- mann
 Text: und wer- fen den Ball.
 
 Lied: Vom Himmel hoch, da komm’ ich her
-Info: Text und Melodie von Martin Luther (1535). Aus „Kinder wollen singen“.
+Info: Text und Melodie von Martin Luther (1535).
 Töne: C':0.5 H A H G A H C' -:0.5
 Text: Vom Him- mel hoch, da komm’ ich her,
 Töne: C':0.5 C' G G E G F E -:0.5
@@ -1083,8 +928,7 @@ Töne: C':0.5 H A G G F:0.5 E:0.5 D C:2
 Text: da- von ich sing’n und sa- – gen will.
 
 Lied: O Tannenbaum
-Info: Volkslied. Aus „Kinder wollen singen“, von F nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Volkslied.
 Töne: G* C:0.75 C:0.25 C:1.5 D:0.5 E:0.75 E:0.25 E:1.5
 Text: O Tan- nen- baum, o Tan- nen- baum,
 Töne: E:0.5 D:0.5 E:0.5 F H* D C -:0.5
@@ -1113,8 +957,7 @@ Text: O Tan- nen- baum, o Tan- nen- baum,
 Text: dein Kleid will mich was leh- ren!
 
 Lied: Still, still, still
-Info: Volkslied aus Salzburg. Aus „Kinder wollen singen“, von F nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“.
+Info: Volkslied aus Salzburg.
 Töne: G C' E G C
 Text: Still, – Still, – still,
 Töne: C:0.5 E:0.5 D D:0.5 F:0.5 H* H*:0.5 D:0.5 C -:0.5
@@ -1150,8 +993,7 @@ Text: Wir, wir, wir,
 Text: wir ru- fen all zu Dir.
 
 Lied: Zu Bethlehem geboren
-Info: Text von Friedrich Spee (1637), Volksweise. Aus „Kinder wollen singen“, von F nach C verschoben.
-Quelle: Weitere Strophen: Liederbuch „Kinder wollen singen“. Manche Strophen haben eine andere Silbenzahl. Ihr Text steht dann als ganze Zeilen über den Noten.
+Info: Text von Friedrich Spee (1637), Volksweise.
 Töne: G* C:1.5 D:0.5 E D C:2 H* C D C:0.5 D:0.5 E D C:2 -
 Text: Zu Beth- le- hem ge- bo- ren ist uns ein – Kin- de- lein,
 Töne: G G E F G A:2 F
@@ -1160,26 +1002,6 @@ Töne: F E F G F:0.5 E:0.5 D:3 -
 Text: sein eigen – – will ich sein,
 Töne: G:2 D:2 E:2 D E:0.5 F:0.5 G C:0.5 D:0.5 E D C:3
 Text: ei- a, ei- a sein – eigen – – will ich sein.
-Strophe 2:
-Ganz: In seine Lieb versenken will ich mich ganz hinab;
-Ganz: mein Herz will ich ihm schenken und alles, was ich hab.
-Ganz: Eia, eia, und alles, was ich hab.
-Strophe 3:
-Ganz: O Kindelein, von Herzen dich will ich lieben sehr
-Ganz: in Freuden und in Schmerzen, je länger mehr und mehr.
-Ganz: Eia, eia, je länger mehr und mehr.
-Strophe 4:
-Ganz: Dich wahren Gott ich finde in meinem Fleisch und Blut;
-Ganz: darum ich fest mich binde an dich, mein höchstes Gut.
-Ganz: Eia, eia, an dich, mein höchstes Gut.
-Strophe 5:
-Ganz: Dazu dein Gnad mir gebe, bitt ich aus Herzensgrund,
-Ganz: dass dir allein ich lebe jetzt und zu aller Stund.
-Ganz: Eia, eia, jetzt und zu aller Stund.
-Strophe 6:
-Ganz: Lass mich von dir nicht scheiden, knüpf zu, knüpf zu das Band
-Ganz: der Liebe zwischen beiden, nimm hin mein Herz zum Pfand.
-Ganz: Eia, eia, nimm hin mein Herz zum Pfand.
 
 Lied: Jingle Bells
 Info: Englisch, nur der Refrain. Lied von James Lord Pierpont (1857).
@@ -1204,7 +1026,7 @@ Text: one- horse o- pen sleigh!
 Kategorie: Geburtstag
 
 Lied: Zum Geburtstag viel Glück
-Info: Melodie von Mildred und Patty Hill (1893). Notensatz aus dem Liederbuch LiberCantorum, von G nach C verschoben. Bei „(Na-me)“ den Namen singen. Viele Töne sind zu tief für das Xylophon und darum nach oben verschoben.
+Info: Melodie von Mildred und Patty Hill (1893). Bei „(Na-me)“ den Namen singen.
 Töne: G*:0.75 G*:0.25 A* G* C H*:2
 Text: Zum Ge- burts- tag viel Glück,
 Töne: G*:0.75 G*:0.25 A* G* D C:2
@@ -1218,8 +1040,7 @@ Text: zum Ge- burts- tag viel Glück!
 Kategorie: Ostern
 
 Lied: Erstanden ist der heilig Christ
-Info: Osterlied aus dem 14. Jahrhundert. Melodie aus der Essen-Sammlung (Erk), von F nach C verschoben.
-Quelle: Strophen: eine Auswahl aus ChoralWiki (CPDL). Dort sind die Strophen 1, 2, 3, 4, 6, 7, 9 und 18 abgedruckt. Hier sind sie der Reihe nach von 1 bis 8 gezählt.
+Info: Osterlied aus dem 14. Jahrhundert.
 Töne: C' C':2 C' H:2 H C' A:2 G:2
 Text: Er- stan- den ist der hei- lig Christ,
 Töne: G A:2 C' H:2 A G:2 F E:2
